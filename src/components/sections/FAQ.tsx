@@ -3,7 +3,7 @@ import { Section } from "@/components/ui/Section";
 
 export function FAQ() {
   return (
-    <Section>
+    <Section id="faq">
       <Container>
         <h2 className="font-heading text-3xl font-semibold">FAQ</h2>
       </Container>

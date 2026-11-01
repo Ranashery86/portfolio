@@ -13,7 +13,7 @@ export function Section({ variant = "dark", className, ...props }: SectionProps)
     <section
       data-section-variant={variant}
       className={cn(
-        "py-20",
+        "scroll-mt-24 py-20",
         variant === "dark" ? "bg-ink text-lavender" : "bg-lavender text-slate",
         className,
       )}
