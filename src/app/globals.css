@@ -187,3 +187,101 @@ h6 {
     animation: none;
   }
 }
+
+/* Hero workflow graphic */
+.wf-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.wf-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: wf-draw 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.wf-node {
+  opacity: 0;
+  transform: scale(0.92);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wf-node-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.wf-node-glow {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.wf-live .wf-float {
+  animation: wf-float 7.5s ease-in-out infinite;
+}
+
+.wf-live .wf-node-glow {
+  animation: wf-node-pulse 3.6s ease-out infinite;
+}
+
+@keyframes wf-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes wf-node-in {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes wf-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@keyframes wf-node-pulse {
+  0%,
+  58% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  68% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.09);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wf-svg,
+  .wf-svg * {
+    animation: none !important;
+  }
+
+  .wf-path {
+    stroke-dashoffset: 0;
+  }
+
+  .wf-node {
+    opacity: 1;
+    transform: none;
+  }
+
+  .wf-node-glow {
+    opacity: 0;
+  }
+
+  .wf-float {
+    transform: none;
+  }
+}

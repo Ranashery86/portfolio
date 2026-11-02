@@ -5,6 +5,8 @@ import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { siteConfig } from "@/data/site";
 
+import { WorkflowGraphic } from "./WorkflowGraphic";
+
 const headlineLines = siteConfig.headline.split(/(?<=\.)\s+/);
 
 export function Hero() {
@@ -81,9 +83,9 @@ export function Hero() {
             </Reveal>
           </div>
 
-          {/* Placeholder for the animated workflow graphic. Left empty until the next step. */}
-          <div className="hidden lg:block" aria-hidden>
-            <div className="h-[420px] w-full" />
+          {/* Animated automation workflow graphic, desktop only. */}
+          <div className="hidden lg:block">
+            <WorkflowGraphic />
           </div>
         </div>
       </Container>
