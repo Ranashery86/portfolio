@@ -19,10 +19,9 @@ import { siteConfig } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 const MAX_NAME_LENGTH = 100;
-const MAX_EMAIL_LENGTH = 254;
+const MAX_EMAIL_LENGTH = 150;
 const MAX_MESSAGE_LENGTH = 2000;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const COOLDOWN_MS = 30_000;
 const COOLDOWN_STORAGE_KEY = "portfolio-contact-cooldown";
 
@@ -36,9 +35,19 @@ type FieldName = keyof typeof initialFields;
 type FieldErrors = Partial<Record<FieldName, string>>;
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
-type Web3FormsResponse = {
-  success?: boolean;
+type ContactApiSuccessResponse = {
+  success: true;
+  message?: string;
 };
+
+type ContactApiErrorResponse = {
+  success: false;
+  error?: string;
+  errors?: string[];
+  fieldErrors?: FieldErrors;
+};
+
+type ContactApiResponse = ContactApiSuccessResponse | ContactApiErrorResponse;
 
 function readStoredCooldown() {
   try {
@@ -131,6 +140,7 @@ export function ContactForm() {
     }
 
     setServerError(null);
+    setFieldErrors({});
 
     if (!validate()) {
       return;
@@ -138,11 +148,6 @@ export function ContactForm() {
 
     const fallbackError = `Something went wrong. Please try again or email me directly at ${siteConfig.email}.`;
     const honeypot = honeypotRef.current?.value ?? "";
-
-    if (honeypot.trim() !== "") {
-      setStatus("success");
-      return;
-    }
 
     const cooldownRemainingMs = cooldownUntilRef.current - Date.now();
 
@@ -154,53 +159,64 @@ export function ContactForm() {
       return;
     }
 
-    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY?.trim();
-
-    if (!accessKey) {
-      console.error(
-        "[contact] NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY is missing. Add it to .env.local and restart the dev server.",
-      );
-      setServerError(fallbackError);
-      setStatus("error");
-      return;
-    }
-
     submittingRef.current = true;
     setStatus("submitting");
 
     try {
-      const response = await fetch(WEB3FORMS_ENDPOINT, {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: accessKey,
           name: fields.name.trim(),
           email: fields.email.trim(),
           message: fields.message.trim(),
-          subject: "New message from your portfolio website",
-          from_name: "Portfolio Contact Form",
-          botcheck: honeypot,
+          website: honeypot,
         }),
       });
 
       const data = (await response.json().catch(() => null)) as
-        | Web3FormsResponse
+        | ContactApiResponse
         | null;
 
-      if (!response.ok || data?.success !== true) {
-        setServerError(fallbackError);
+      if (response.status === 429) {
+        setServerError(
+          data && "error" in data
+            ? data.error || "Too many requests. Please wait a few minutes and try again."
+            : "Too many requests. Please wait a few minutes and try again.",
+        );
         setStatus("error");
         return;
       }
 
-      const cooldownUntil = Date.now() + COOLDOWN_MS;
+      if (response.ok && data && "success" in data && data.success === true) {
+        const cooldownUntil = Date.now() + COOLDOWN_MS;
 
-      cooldownUntilRef.current = cooldownUntil;
-      storeCooldown(cooldownUntil);
-      setStatus("success");
+        cooldownUntilRef.current = cooldownUntil;
+        storeCooldown(cooldownUntil);
+        setStatus("success");
+        return;
+      }
+
+      if (response.status === 400 && data && "fieldErrors" in data && data.fieldErrors) {
+        setFieldErrors(data.fieldErrors);
+        setServerError(
+          (data.errors && data.errors[0]) ||
+            data.error ||
+            "Please check the highlighted fields and try again.",
+        );
+        setStatus("error");
+        return;
+      }
+
+      setServerError(
+        data && "error" in data && data.error
+          ? data.error
+          : fallbackError,
+      );
+      setStatus("error");
     } catch {
       setServerError(fallbackError);
       setStatus("error");
@@ -253,13 +269,13 @@ export function ContactForm() {
       className="relative flex flex-col gap-5"
     >
       <div aria-hidden="true" className="absolute -left-[9999px]">
-        <label htmlFor="contact-honeypot">
+        <label htmlFor="contact-website">
           Leave this field empty
         </label>
         <input
           ref={honeypotRef}
-          id="contact-honeypot"
-          name="honeypot"
+          id="contact-website"
+          name="website"
           type="text"
           tabIndex={-1}
           autoComplete="off"

@@ -143,6 +143,25 @@ h6 {
   animation: faq-answer-in 220ms ease-out;
 }
 
+.voice-panel {
+  max-height: min(70vh, calc(100dvh - 10rem));
+}
+
+.voice-panel-enter {
+  animation: voice-panel-in 180ms ease-out;
+}
+
+@keyframes voice-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @keyframes faq-answer-in {
   from {
     opacity: 0;

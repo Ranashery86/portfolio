@@ -1,9 +1,9 @@
 # Shaheer Mudassar — Portfolio
 
-Foundation for a personal portfolio site for Shaheer Mudassar, an AI Automation
-Engineer (n8n automation, custom CRMs, frontend development). This stage contains
-setup only: layout, design tokens, data placeholders, SEO foundation, and a contact
-route stub. No sections, animations, or marketing copy have been built yet.
+Personal portfolio site for Shaheer Mudassar, an AI Automation Engineer (n8n
+automation, custom CRMs, frontend development). The contact form and the floating
+voice assistant both go through server-only n8n webhooks, so no webhook URLs or
+secrets are exposed to the browser.
 
 ## Getting started
 
@@ -24,17 +24,35 @@ npm start
 
 Copy `.env.example` to `.env.local` and fill in the values.
 
-| Variable                           | Required | Purpose                                                         |
-| ---------------------------------- | -------- | --------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`             | Yes      | Canonical site URL used for metadata, sitemap, and robots.      |
-| `NEXT_PUBLIC_CALENDLY_URL`         | Yes      | Booking link used by call-to-action buttons.                    |
-| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Yes      | Public Web3Forms key used by the browser contact form.          |
-| `N8N_WEBHOOK_URL`                  | No       | Reserved for the future n8n contact route; currently unused.    |
+| Variable                   | Required | Purpose                                                                 |
+| -------------------------- | -------- | ----------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`     | Yes      | Canonical site URL used for metadata, sitemap, and robots.              |
+| `NEXT_PUBLIC_CALENDLY_URL` | Yes      | Booking link used by call-to-action buttons.                            |
+| `N8N_CONTACT_WEBHOOK_URL`  | Yes      | Server-only n8n webhook that receives contact form submissions.          |
+| `N8N_VOICE_WEBHOOK_URL`    | Yes      | Server-only n8n webhook for the voice assistant.                        |
+| `VOICE_WEBHOOK_SECRET`     | Yes      | Server-only secret sent to the voice webhook as `x-voice-secret`.        |
 
-The contact form submits directly from the browser to Web3Forms. The API route
-is kept in the project for the future n8n webhook integration.
+The contact form posts to `/api/contact`, which validates the input and forwards
+it to `N8N_CONTACT_WEBHOOK_URL`. The voice widget posts recorded audio to
+`/api/voice`, which validates the upload and forwards it to
+`N8N_VOICE_WEBHOOK_URL` with the `x-voice-secret` header.
+
+The three n8n variables are intentionally server-only (no `NEXT_PUBLIC_` prefix).
+Do not put webhook URLs or secrets in client code.
 
 `.env.local` is ignored by git. `.env.example` is committed.
+
+## Contact and voice integrations
+
+- `/api/contact` accepts `{ name, email, message, website }`, validates the
+  fields, silently accepts the `website` honeypot when it is filled, rate limits
+  per IP, and expects a `2xx` response with `{ "success": true }` from n8n.
+- `/api/voice` accepts multipart form data with an `audio` file and a
+  `sessionId`, validates the file size and session ID, rate limits per IP, and
+  forwards the audio to n8n with the `x-voice-secret` header.
+
+Both n8n workflows must be published for the live integrations to work. When
+deploying to Vercel, add the same three n8n variables in the project settings.
 
 ## Project structure
 
@@ -45,7 +63,8 @@ src/
     page.tsx                    Home page with placeholder sections
     globals.css                 Tailwind theme tokens and global styles
     case-studies/[slug]/        Dynamic case study page (static params + metadata)
-    api/contact/route.ts        POST contact stub (Web3Forms or n8n)
+    api/contact/route.ts        POST contact form proxy to the n8n webhook
+    api/voice/route.ts          POST multipart audio proxy to the n8n voice agent
     sitemap.ts                  Sitemap generated from case study data
     robots.ts                   Robots rules and sitemap pointer
     not-found.tsx               404 page
@@ -54,6 +73,7 @@ src/
     sections/                   Hero, About, CaseStudies, Testimonials, FAQ, Contact
     seo/                        JsonLd helper
     ui/                         Button, Container, Section, Card
+    voice/                      Lazy-loaded floating voice assistant widget
   data/
     site.ts                     Site config and headline
     case-studies.ts             Five typed demo case studies

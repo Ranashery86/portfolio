@@ -1,22 +1,22 @@
-// This route is currently unused. Web3Forms blocks server-side requests on the
-// free plan with a Cloudflare 403 challenge, so the contact form submits directly
-// from the browser. Keep this handler for the future n8n webhook path.
-
 import { NextResponse } from "next/server";
 
 const MAX_NAME_LENGTH = 100;
-const MAX_EMAIL_LENGTH = 254;
-const MAX_MESSAGE_LENGTH = 5000;
+const MAX_EMAIL_LENGTH = 150;
+const MAX_MESSAGE_LENGTH = 2000;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
+const UPSTREAM_TIMEOUT_MS = 10_000;
+
+const GENERIC_UPSTREAM_ERROR =
+  "Could not deliver the message. Please try again or email me directly.";
+const GENERIC_CONFIG_ERROR =
+  "The contact form is temporarily unavailable. Please email me directly.";
 
 type ContactBody = {
   name?: unknown;
   email?: unknown;
   message?: unknown;
-  honeypot?: unknown;
   website?: unknown;
 };
 
@@ -106,14 +106,6 @@ function checkRateLimit(ip: string) {
   return { allowed: true, retryAfter: 0 };
 }
 
-function hasUsableWeb3FormsKey(key: string | undefined) {
-  if (!key) {
-    return false;
-  }
-
-  return !key.toLowerCase().includes("your-");
-}
-
 export async function POST(request: Request) {
   const ip = getClientIp(request);
   const rateLimit = checkRateLimit(ip);
@@ -140,14 +132,9 @@ export async function POST(request: Request) {
     return errorResponse(400, "Invalid JSON body.");
   }
 
-  const honeypot =
-    typeof body.honeypot === "string"
-      ? body.honeypot
-      : typeof body.website === "string"
-        ? body.website
-        : "";
+  const website = typeof body.website === "string" ? body.website.trim() : "";
 
-  if (honeypot.trim() !== "") {
+  if (website !== "") {
     return NextResponse.json({
       success: true,
       message: "Thanks, your message has been received.",
@@ -185,98 +172,53 @@ export async function POST(request: Request) {
     return errorResponse(400, errors[0], { errors, fieldErrors });
   }
 
+  const webhookUrl = process.env.N8N_CONTACT_WEBHOOK_URL?.trim();
+
+  if (!webhookUrl) {
+    console.error(
+      "[contact] N8N_CONTACT_WEBHOOK_URL is not configured. Add it to .env.local as a server-only variable and restart the server.",
+    );
+
+    return errorResponse(500, GENERIC_CONFIG_ERROR);
+  }
+
   const contact: ContactMessage = { name, email, message };
-  const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL?.trim();
-  const web3formsAccessKey = process.env.WEB3FORMS_ACCESS_KEY?.trim();
-  const web3formsConfigured = hasUsableWeb3FormsKey(web3formsAccessKey);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
 
   try {
-    if (n8nWebhookUrl) {
-      const response = await fetch(n8nWebhookUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...contact,
-          source: "portfolio",
-          submittedAt: new Date().toISOString(),
-        }),
-      });
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...contact, website: "" }),
+      signal: controller.signal,
+      cache: "no-store",
+    });
 
-      if (!response.ok) {
-        console.error(
-          `[contact] n8n delivery failed with status ${response.status}.`,
-        );
-        return errorResponse(
-          502,
-          "Could not deliver the message. Please try again or email me directly.",
-        );
-      }
+    const result = (await response.json().catch(() => null)) as {
+      success?: unknown;
+    } | null;
 
-      return NextResponse.json({
-        success: true,
-        message: "Thanks, your message has been sent.",
-        provider: "n8n",
-      });
+    if (!response.ok || result?.success !== true) {
+      console.error(
+        `[contact] n8n delivery failed with status ${response.status}.`,
+      );
+
+      return errorResponse(502, GENERIC_UPSTREAM_ERROR);
     }
 
-    if (web3formsConfigured && web3formsAccessKey) {
-      const response = await fetch(WEB3FORMS_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: web3formsAccessKey,
-          subject: `New enquiry from ${name}`,
-          from_name: name,
-          replyto: email,
-          name,
-          email,
-          message,
-          botcheck: false,
-        }),
-      });
-
-      const result = (await response.json().catch(() => null)) as {
-        success?: boolean;
-        message?: string;
-      } | null;
-
-      if (!response.ok || result?.success === false) {
-        console.error(
-          `[contact] Web3Forms delivery failed with status ${response.status}.`,
-        );
-        return errorResponse(
-          502,
-          "Could not deliver the message. Please try again or email me directly.",
-        );
-      }
-
-      return NextResponse.json({
-        success: true,
-        message: "Thanks, your message has been sent.",
-        provider: "web3forms",
-      });
-    }
-
-    console.error(
-      "[contact] Contact form is not configured. Set a real WEB3FORMS_ACCESS_KEY or N8N_WEBHOOK_URL.",
-    );
-
-    return errorResponse(
-      500,
-      "The contact form is not configured yet. Please email me directly.",
-    );
+    return NextResponse.json({
+      success: true,
+      message: "Thanks, your message has been sent.",
+    });
   } catch (error) {
     console.error(
       "[contact] Delivery failed:",
       error instanceof Error ? error.message : "Unknown error",
     );
 
-    return errorResponse(
-      502,
-      "Could not deliver the message. Please try again or email me directly.",
-    );
+    return errorResponse(502, GENERIC_UPSTREAM_ERROR);
+  } finally {
+    clearTimeout(timeout);
   }
 }
