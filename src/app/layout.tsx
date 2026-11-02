@@ -66,7 +66,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-ink font-body text-lavender">
+      <body
+        id="top"
+        className="flex min-h-full flex-col bg-ink font-body text-lavender"
+      >
         <JsonLd data={personSchema} />
         <Header />
         <main className="flex-1">{children}</main>

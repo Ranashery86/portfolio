@@ -24,14 +24,15 @@ npm start
 
 Copy `.env.example` to `.env.local` and fill in the values.
 
-| Variable                   | Required | Purpose                                                        |
-| -------------------------- | -------- | -------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`     | Yes      | Canonical site URL used for metadata, sitemap, and robots.     |
-| `NEXT_PUBLIC_CALENDLY_URL` | Yes      | Booking link used by call-to-action buttons.                   |
-| `WEB3FORMS_ACCESS_KEY`     | Yes\*    | Web3Forms access key for the contact form.                     |
-| `N8N_WEBHOOK_URL`          | No       | Optional n8n webhook; when set, contact submissions go here.   |
+| Variable                           | Required | Purpose                                                         |
+| ---------------------------------- | -------- | --------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`             | Yes      | Canonical site URL used for metadata, sitemap, and robots.      |
+| `NEXT_PUBLIC_CALENDLY_URL`         | Yes      | Booking link used by call-to-action buttons.                    |
+| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Yes      | Public Web3Forms key used by the browser contact form.          |
+| `N8N_WEBHOOK_URL`                  | No       | Reserved for the future n8n contact route; currently unused.    |
 
-\* Required unless `N8N_WEBHOOK_URL` is set.
+The contact form submits directly from the browser to Web3Forms. The API route
+is kept in the project for the future n8n webhook integration.
 
 `.env.local` is ignored by git. `.env.example` is committed.
 
