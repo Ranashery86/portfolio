@@ -619,9 +619,6 @@ export function VoiceWidget() {
               >
                 AI Assistant
               </h2>
-              <span className="rounded-full border border-violet-light/30 bg-violet-light/10 px-2 py-0.5 text-[10px] font-semibold tracking-[0.12em] text-lavender uppercase">
-                Demo
-              </span>
             </div>
             <button
               ref={closeButtonRef}

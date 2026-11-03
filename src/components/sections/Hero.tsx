@@ -22,7 +22,7 @@ export function Hero() {
       />
 
       <Container className="flex min-h-[calc(100svh-4.5rem)] flex-col justify-center py-20 sm:py-24 lg:py-28">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1fr)]">
           <div className="max-w-3xl">
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-violet-light/25 bg-violet-deep/40 px-4 py-1.5 text-xs font-medium tracking-wide text-lavender backdrop-blur">
@@ -84,7 +84,7 @@ export function Hero() {
           </div>
 
           {/* Animated automation workflow graphic, desktop only. */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:flex lg:items-center lg:justify-center">
             <WorkflowGraphic />
           </div>
         </div>

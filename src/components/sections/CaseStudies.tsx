@@ -3,7 +3,6 @@ import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { DemoBadge } from "@/components/ui/DemoBadge";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section } from "@/components/ui/Section";
 import { caseStudies } from "@/data/case-studies";
@@ -22,8 +21,8 @@ export function CaseStudies() {
               Automation in action
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate">
-              Five demo projects showing how custom CRMs and n8n automation can
-              remove manual work. Each one includes a walkthrough video.
+              Five example projects showing how custom CRMs and n8n automation
+              can remove manual work. Each one includes a walkthrough video.
             </p>
           </div>
         </Reveal>
@@ -36,8 +35,7 @@ export function CaseStudies() {
             >
               <Reveal delay={index * 0.06} className="h-full">
                 <article className="group relative flex h-full flex-col rounded-2xl border border-violet-light/30 bg-violet-deep p-6 text-lavender transition duration-300 ease-out hover:-translate-y-1 hover:border-violet-light/60 focus-within:border-violet-light/60">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <DemoBadge />
+                  <div className="flex flex-wrap items-center justify-end gap-3">
                     <span className="text-[0.65rem] font-semibold tracking-[0.14em] text-violet-light uppercase">
                       {caseStudy.industry}
                     </span>
@@ -77,6 +75,10 @@ export function CaseStudies() {
             </li>
           ))}
         </ul>
+
+        <p className="mt-6 text-center text-sm text-slate">
+          Figures shown are illustrative examples.
+        </p>
 
         <div className="mt-12 flex justify-center">
           <Button

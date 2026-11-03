@@ -2,18 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  ArrowLeft,
-  ArrowRight,
-  ImageIcon,
-  Info,
-  Play,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, ImageIcon, Play } from "lucide-react";
 
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { DemoBadge } from "@/components/ui/DemoBadge";
 import { LoomFacade } from "@/components/ui/LoomFacade";
 import { Section } from "@/components/ui/Section";
 import { caseStudies, getCaseStudyBySlug } from "@/data/case-studies";
@@ -37,7 +30,7 @@ export async function generateMetadata({
     return { title: "Case study not found" };
   }
 
-  const description = `${caseStudy.shortDescription} Demo project with estimated results from a simulated scenario.`;
+  const description = `${caseStudy.shortDescription} Case study with illustrative results.`;
 
   return {
     title: caseStudy.title,
@@ -151,7 +144,6 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           <div className="mt-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <div className="flex flex-wrap items-center gap-3">
-                {caseStudy.isDemo ? <DemoBadge /> : null}
                 <span className="text-xs font-semibold tracking-[0.16em] text-violet-light uppercase">
                   {caseStudy.industry}
                 </span>
@@ -180,20 +172,6 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
       <Section variant="light">
         <Container>
           <div className="mx-auto flex w-full max-w-4xl flex-col gap-12">
-            <div
-              role="note"
-              className="flex gap-3 rounded-2xl border border-violet-light/40 bg-violet-light/15 p-5"
-            >
-              <Info
-                aria-hidden
-                className="mt-0.5 size-5 shrink-0 text-purple"
-              />
-              <p className="text-sm leading-relaxed text-slate">
-                This is a demo project. Results shown are estimates based on a
-                simulated scenario, not data from a real client.
-              </p>
-            </div>
-
             <ol className="flex flex-col">
               {steps.map((step, index) => (
                 <li key={step.title} className="relative pb-10 pl-16 last:pb-0">
@@ -224,7 +202,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                 Walkthrough Video
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate">
-                A short preview of how this demo workflow is put together.
+                A short preview of how this workflow is put together.
               </p>
               <div className="mt-6">
                 {caseStudy.loomUrl ? (
@@ -241,7 +219,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                       Walkthrough video coming soon
                     </p>
                     <p className="max-w-sm text-sm leading-relaxed text-slate">
-                      This demo does not have a recorded walkthrough yet.
+                      This case study does not have a recorded walkthrough yet.
                     </p>
                   </div>
                 )}
@@ -254,7 +232,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate">
                 A visual reference of the workflow nodes and connections used in
-                this demo.
+                this case study.
               </p>
               <div className="mt-6">
                 {caseStudy.screenshot ? (

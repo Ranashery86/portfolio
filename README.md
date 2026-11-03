@@ -30,15 +30,17 @@ Copy `.env.example` to `.env.local` and fill in the values.
 | `NEXT_PUBLIC_CALENDLY_URL` | Yes      | Booking link used by call-to-action buttons.                            |
 | `N8N_CONTACT_WEBHOOK_URL`  | Yes      | Server-only n8n webhook that receives contact form submissions.          |
 | `N8N_VOICE_WEBHOOK_URL`    | Yes      | Server-only n8n webhook for the voice assistant.                        |
-| `VOICE_WEBHOOK_SECRET`     | Yes      | Server-only secret sent to the voice webhook as `x-voice-secret`.        |
+| `VOICE_WEBHOOK_SECRET`     | Yes      | Server-only secret sent to the voice webhook.                            |
+| `VOICE_WEBHOOK_HEADER_NAME`| No       | Header name for the voice webhook secret (default `portfolio-voice-agent`). |
 
 The contact form posts to `/api/contact`, which validates the input and forwards
 it to `N8N_CONTACT_WEBHOOK_URL`. The voice widget posts recorded audio to
 `/api/voice`, which validates the upload and forwards it to
-`N8N_VOICE_WEBHOOK_URL` with the `x-voice-secret` header.
+`N8N_VOICE_WEBHOOK_URL` with the configured `VOICE_WEBHOOK_HEADER_NAME` header
+(default `portfolio-voice-agent`).
 
-The three n8n variables are intentionally server-only (no `NEXT_PUBLIC_` prefix).
-Do not put webhook URLs or secrets in client code.
+The n8n webhook variables and the voice secret are intentionally server-only (no
+`NEXT_PUBLIC_` prefix). Do not put webhook URLs or secrets in client code.
 
 `.env.local` is ignored by git. `.env.example` is committed.
 
@@ -49,7 +51,8 @@ Do not put webhook URLs or secrets in client code.
   per IP, and expects a `2xx` response with `{ "success": true }` from n8n.
 - `/api/voice` accepts multipart form data with an `audio` file and a
   `sessionId`, validates the file size and session ID, rate limits per IP, and
-  forwards the audio to n8n with the `x-voice-secret` header.
+  forwards the audio to n8n with the configured `VOICE_WEBHOOK_HEADER_NAME`
+  header (default `portfolio-voice-agent`).
 
 Both n8n workflows must be published for the live integrations to work. When
 deploying to Vercel, add the same three n8n variables in the project settings.
@@ -76,7 +79,7 @@ src/
     voice/                      Lazy-loaded floating voice assistant widget
   data/
     site.ts                     Site config and headline
-    case-studies.ts             Five typed demo case studies
+    case-studies.ts             Five typed case study entries
     faq.ts                      Five placeholder FAQ items
   lib/
     utils.ts                    cn helper built on clsx

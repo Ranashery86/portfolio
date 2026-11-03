@@ -81,7 +81,7 @@ export async function Footer() {
           </p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <p className="text-xs text-lavender/60">
-              Demo project results are estimates.
+              Case study figures are illustrative examples.
             </p>
             <a
               href="#top"

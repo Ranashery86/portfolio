@@ -134,7 +134,7 @@ export function WorkflowGraphic() {
       role="img"
       aria-label="Animated diagram of an automation workflow from new lead to booked call"
       className={cn(
-        "relative isolate w-full max-w-[540px] select-none",
+        "relative isolate w-full max-w-[680px] select-none",
         isInView && "wf-live",
       )}
     >
@@ -260,8 +260,8 @@ export function WorkflowGraphic() {
         </svg>
       </div>
 
-      <figcaption className="mt-3 text-center text-[0.7rem] tracking-wide text-lavender/70">
-        Live workflow preview (demo)
+      <figcaption className="mt-3 text-center text-[0.7rem] tracking-wide text-lavender">
+        How a new lead is handled automatically
       </figcaption>
     </figure>
   );
