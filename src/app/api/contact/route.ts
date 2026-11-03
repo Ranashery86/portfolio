@@ -17,7 +17,7 @@ type ContactBody = {
   name?: unknown;
   email?: unknown;
   message?: unknown;
-  website?: unknown;
+  hp?: unknown;
 };
 
 type ContactMessage = {
@@ -132,9 +132,11 @@ export async function POST(request: Request) {
     return errorResponse(400, "Invalid JSON body.");
   }
 
-  const website = typeof body.website === "string" ? body.website.trim() : "";
+  const honeypot = typeof body.hp === "string" ? body.hp.trim() : "";
 
-  if (website !== "") {
+  if (honeypot !== "") {
+    console.warn("[contact] honeypot triggered");
+
     return NextResponse.json({
       success: true,
       message: "Thanks, your message has been received.",
@@ -206,6 +208,8 @@ export async function POST(request: Request) {
 
       return errorResponse(502, GENERIC_UPSTREAM_ERROR);
     }
+
+    console.info(`[contact] forwarded to n8n, status ${response.status}`);
 
     return NextResponse.json({
       success: true,

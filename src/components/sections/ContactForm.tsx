@@ -173,7 +173,7 @@ export function ContactForm() {
           name: fields.name.trim(),
           email: fields.email.trim(),
           message: fields.message.trim(),
-          website: honeypot,
+          hp: honeypot,
         }),
       });
 
@@ -269,13 +269,13 @@ export function ContactForm() {
       className="relative flex flex-col gap-5"
     >
       <div aria-hidden="true" className="absolute -left-[9999px]">
-        <label htmlFor="contact-website">
+        <label htmlFor="contact-company-fax-number">
           Leave this field empty
         </label>
         <input
           ref={honeypotRef}
-          id="contact-website"
-          name="website"
+          id="contact-company-fax-number"
+          name="company_fax_number"
           type="text"
           tabIndex={-1}
           autoComplete="off"
