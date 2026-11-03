@@ -21,6 +21,10 @@ const inter = Inter({
   display: "swap",
 });
 
+const photoUrl = siteConfig.photo
+  ? new URL(siteConfig.photo, siteConfig.url).toString()
+  : null;
+
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -29,8 +33,13 @@ const personSchema = {
   description: siteConfig.description,
   url: siteConfig.url,
   email: siteConfig.email,
+  ...(photoUrl ? { image: photoUrl } : {}),
   sameAs: Object.values(siteConfig.social).filter((url) => url.length > 0),
 };
+
+const socialImage = photoUrl
+  ? { url: photoUrl, alt: "Shaheer Mudassar, AI Automation Engineer" }
+  : null;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -53,11 +62,13 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: siteConfig.title,
     description: siteConfig.description,
+    ...(socialImage ? { images: [socialImage] } : {}),
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.title,
     description: siteConfig.description,
+    ...(socialImage ? { images: [socialImage.url] } : {}),
   },
 };
 

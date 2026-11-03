@@ -6,11 +6,10 @@ export const siteConfig = {
   headline: "Custom CRM + Full Automation. One Package. Zero Manual Work.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   calendlyUrl: process.env.NEXT_PUBLIC_CALENDLY_URL || "",
-  email: "hello@example.com",
-  photo: "",
+  email: "shaheermdssr@gmail.com",
+  photo: "/shaheer.jpg",
   aboutText: [
     "I'm an AI Automation Engineer who helps businesses stop wasting time on repetitive work. I build custom CRMs and connect every step of your process with n8n automation, so leads, follow-ups, invoices and support run on their own.",
-    "[Add more about yourself here: your story, your approach, and why clients should work with you.]",
   ],
   showTestimonials: true,
   social: {

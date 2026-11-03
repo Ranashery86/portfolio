@@ -48,15 +48,25 @@ export function About() {
                     "radial-gradient(circle at 50% 40%, rgba(139, 124, 199, 0.3), rgba(90, 59, 140, 0.16) 55%, transparent 76%)",
                 }}
               />
-              <div className="glass-card relative aspect-[4/5] overflow-hidden rounded-3xl">
+              <div
+                className="glass-card relative aspect-[4/5] overflow-hidden rounded-3xl"
+                style={{ borderColor: "rgb(139 124 199 / 0.3)" }}
+              >
                 {siteConfig.photo ? (
-                  <Image
-                    src={siteConfig.photo}
-                    alt="Shaheer Mudassar, AI Automation Engineer"
-                    fill
-                    sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, 90vw"
-                    className="object-cover"
-                  />
+                  <>
+                    <Image
+                      src={siteConfig.photo}
+                      alt="Shaheer Mudassar, AI Automation Engineer"
+                      fill
+                      sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, 90vw"
+                      quality={80}
+                      className="object-cover object-[center_20%]"
+                    />
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/40 to-transparent"
+                    />
+                  </>
                 ) : (
                   <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
                     <span className="flex size-20 items-center justify-center rounded-full border border-violet-light/30 bg-violet-deep/70 text-violet-light">
