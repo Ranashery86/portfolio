@@ -11,8 +11,12 @@ export type CaseStudy = {
   loomUrl: string;
   screenshot: string;
   subtitle?: string;
+  cardTitle?: string;
   problemParagraphs?: string[];
+  problemBullets?: string[];
   solutionParagraphs?: string[];
+  solutionSubsections?: { title: string; paragraphs: string[] }[];
+  solutionClosing?: { title: string; text: string };
   resultIntro?: string;
   resultStats?: { value: string; label: string; assumption: string }[];
   resultNote?: string;
@@ -23,6 +27,10 @@ export type CaseStudy = {
   howItWorksOutro?: string;
   builtFor?: { title: string; text: string };
   cta?: { heading: string; paragraphs: string[]; buttonLabel: string };
+  videoCaption?: string;
+  screenshotCaption?: string;
+  postUrl?: string;
+  postLabel?: string;
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -177,21 +185,150 @@ export const caseStudies: CaseStudy[] = [
     screenshot: "",
   },
   {
-    slug: "support-bot",
-    title: "Support Bot: 70% of Queries Solved Without a Human",
-    industry: "Customer Support",
-    metric: "70%",
-    metricLabel: "queries solved by the bot",
+    slug: "ai-ecommerce-support-chatbot",
+    title:
+      "AI Customer Chatbot That Saves Support Time and Helps Shoppers Find Products",
+    cardTitle: "AI Customer Chatbot for Online Stores",
+    subtitle:
+      "AI E-commerce Customer Chatbot: Order Tracking, Support Tickets & Product Recommendations",
+    industry: "E-commerce",
     shortDescription:
-      "Case study showing a support bot that resolves common questions instantly.",
+      "An AI chatbot that tracks orders, handles support tickets, and recommends products directly on a store's website.",
     problem:
-      "A support team answers the same setup and billing questions every day. Repetitive tickets slow down complex cases and make response times hard to predict.",
+      "Repeated order questions, slow support replies, and missed product recommendations take up valuable time.",
     solution:
-      "A retrieval-based support bot answers common questions using an approved knowledge base. When a query falls outside its scope, it collects context and hands the ticket to a human with the conversation attached.",
+      "I built an AI chatbot that tracks orders, handles support tickets, and recommends products directly on a store's website.",
     result:
-      "70% of queries are resolved without a human. The remaining tickets reach the team with more context, which reduces handling time.",
+      "Customers get faster answers, support requests stay organized, and store owners spend less time on repetitive questions.",
+    metric: "5 hrs/week",
+    metricLabel: "estimated time saved",
     loomUrl: "",
     screenshot: "",
+    postUrl: "",
+    postLabel: "",
+    problemParagraphs: [
+      "Running an online store means answering customer questions every day.",
+      'Customers ask, "Where is my order?" or "When will it arrive?" Others need help with damaged products, missing items, or delivery problems.',
+      "Answering these questions manually takes time. Support messages can get lost, replies can be delayed, and customers may need to explain the same problem more than once.",
+      "At the same time, shoppers looking for products may leave without buying simply because they cannot find what they need.",
+      "For a busy store owner, this creates four problems:",
+    ],
+    problemBullets: [
+      "Too much time spent answering repeated questions.",
+      "Slow replies that frustrate customers.",
+      "Support issues that are difficult to track.",
+      "Missed opportunities to recommend relevant products.",
+    ],
+    solutionParagraphs: [
+      "I built an AI customer chatbot that works directly on a store's website (for example Shopify, WooCommerce, or a custom website).",
+      "Customers can ask questions in everyday language, and the chatbot understands what they need.",
+      "It handles three main tasks automatically.",
+    ],
+    solutionSubsections: [
+      {
+        title: "1. Order Tracking",
+        paragraphs: [
+          "When a customer asks about an order, the chatbot requests the order ID if needed.",
+          "It checks the order details in the store's database (for example Supabase, Google Sheets, Airtable, or any store database).",
+          "It then provides the current order status and expected delivery information, when available.",
+          "Customers get answers without waiting for someone to check the order manually.",
+        ],
+      },
+      {
+        title: "2. Customer Support",
+        paragraphs: [
+          "When a customer reports a problem, the chatbot collects their email address, product information, and issue details.",
+          "It creates a support ticket with a unique ticket number and shares that number with the customer.",
+          "The support team receives an automatic email alert (for example through Gmail or any email service).",
+          "Customers can also check their ticket's progress later using the ticket number.",
+          "This helps keep support requests organized and reduces the risk of missed messages.",
+        ],
+      },
+      {
+        title: "3. Product Recommendations",
+        paragraphs: [
+          "When a customer asks for product suggestions, the chatbot searches the store's product list.",
+          "It recommends suitable products based on what the customer is looking for.",
+          "For example, a customer can ask for a similar product or options within a particular category.",
+          "This makes product discovery easier and creates more opportunities for customers to explore the store.",
+        ],
+      },
+    ],
+    solutionClosing: {
+      title: "A More Natural Customer Experience",
+      text: 'The chatbot also remembers the conversation. Customers do not have to repeat information they already shared. And when someone simply says "thanks," the chatbot responds politely and offers further help.',
+    },
+    resultIntro:
+      "This case study shows how a store can handle common customer questions without requiring staff to respond to every message manually.",
+    resultStats: [
+      {
+        value: "5 hrs/week",
+        label: "Estimated time saved",
+        assumption: "Less time spent on routine customer questions.",
+      },
+      {
+        value: "20 hrs",
+        label: "Estimated monthly time saved",
+        assumption: "More time available for running the business.",
+      },
+    ],
+    resultNote:
+      "Estimated, not measured results. Assumes 200 customer messages per week, 3 minutes of manual work per message, and 50% handled automatically. Monthly estimate uses four weeks.",
+    resultBenefitsTitle: "Other practical benefits:",
+    resultBenefits: [
+      {
+        title: "Faster answers",
+        text: "Customers can check order details without waiting for a manual reply.",
+      },
+      {
+        title: "Better support tracking",
+        text: "Every reported issue gets a ticket number and a record.",
+      },
+      {
+        title: "Fewer missed requests",
+        text: "The support team receives automatic alerts when customers report problems.",
+      },
+      {
+        title: "Easier product discovery",
+        text: "Customers receive relevant suggestions from the available product list.",
+      },
+      {
+        title: "Lower routine support workload",
+        text: "Staff can focus on problems that need personal attention.",
+      },
+    ],
+    resultOutro:
+      "These are expected benefits of the system, not results measured from a live client store.",
+    howItWorks: [
+      {
+        title: "Customer sends a message",
+        text: "A shopper opens the chat window on the website and asks about an order, reports a problem, or requests product suggestions.",
+      },
+      {
+        title: "The chatbot finds the right information",
+        text: "It understands the request, checks the relevant store records, or collects the details needed to create a support ticket.",
+      },
+      {
+        title: "The customer gets a helpful response",
+        text: "The chatbot shares order updates, provides a support ticket number, or recommends suitable products. If a support ticket is created, the team also receives an email alert.",
+      },
+    ],
+    builtFor: {
+      title: "Works for Any Business",
+      text: "This chatbot is not limited to one type of store. It can be adapted to different businesses that sell products and handle customer questions (for example an online clothing store, electronics shop, grocery delivery business, or wholesale supplier). The product list, order records, support process, and responses can all be adjusted to fit the business.",
+    },
+    videoCaption:
+      "Watch this walkthrough to see how the AI chatbot tracks orders, creates support tickets, and recommends products through a simple customer conversation.",
+    screenshotCaption:
+      "Behind the scenes: the automated process that connects customer messages with order information, support tickets, product recommendations, and team notifications.",
+    cta: {
+      heading: "Want a Chatbot Like This for Your Store?",
+      paragraphs: [
+        "Tell me which questions take most of your support time: order tracking, damaged or missing items, or product recommendations.",
+        "On a free discovery call, we will map out a chatbot built around your store, your order data, and your support process, and I will tell you what it would take to build it.",
+      ],
+      buttonLabel: "Book a Free Discovery Call",
+    },
   },
 ];
 

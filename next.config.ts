@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         destination: "/case-studies/client-onboarding-autopilot",
         permanent: true,
       },
+      {
+        source: "/case-studies/support-bot",
+        destination: "/case-studies/ai-ecommerce-support-chatbot",
+        permanent: true,
+      },
     ];
   },
   images: {

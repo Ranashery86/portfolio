@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, ImageIcon, Play } from "lucide-react";
+import { ArrowLeft, ArrowRight, ImageIcon } from "lucide-react";
 
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Button } from "@/components/ui/Button";
@@ -69,21 +69,42 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
       ? caseStudies[currentIndex + 1]
       : undefined;
 
+  const problemListIntro =
+    caseStudy.problemBullets && caseStudy.problemParagraphs?.length
+      ? caseStudy.problemParagraphs[caseStudy.problemParagraphs.length - 1]
+      : undefined;
+  const problemBodyParagraphs =
+    problemListIntro && caseStudy.problemParagraphs
+      ? caseStudy.problemParagraphs.slice(0, -1)
+      : caseStudy.problemParagraphs;
+
   const steps = [
     {
       title: "The Problem",
       body: caseStudy.problem,
-      paragraphs: caseStudy.problemParagraphs,
+      paragraphs: problemBodyParagraphs,
+      listIntro: problemListIntro,
+      bullets: caseStudy.problemBullets,
+      subsections: undefined,
+      closing: undefined,
     },
     {
       title: "The Solution",
       body: caseStudy.solution,
       paragraphs: caseStudy.solutionParagraphs,
+      listIntro: undefined,
+      bullets: undefined,
+      subsections: caseStudy.solutionSubsections,
+      closing: caseStudy.solutionClosing,
     },
     {
       title: "The Result",
       body: caseStudy.result,
       paragraphs: undefined,
+      listIntro: undefined,
+      bullets: undefined,
+      subsections: undefined,
+      closing: undefined,
     },
   ];
 
@@ -202,16 +223,81 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                   <h2 className="font-heading text-2xl font-semibold text-ink">
                     {step.title}
                   </h2>
-                  {step.paragraphs ? (
+                  {step.title === "The Problem" &&
+                  (step.paragraphs || step.bullets) ? (
                     <div className="mt-3 flex max-w-3xl flex-col gap-4">
-                      {step.paragraphs.map((paragraph) => (
-                        <p
-                          key={paragraph}
-                          className="text-base leading-relaxed text-slate"
-                        >
-                          {paragraph}
+                      {step.paragraphs ? (
+                        step.paragraphs.map((paragraph) => (
+                          <p
+                            key={paragraph}
+                            className="text-base leading-relaxed text-slate"
+                          >
+                            {paragraph}
+                          </p>
+                        ))
+                      ) : null}
+                      {step.listIntro ? (
+                        <p className="text-base leading-relaxed text-slate">
+                          {step.listIntro}
                         </p>
-                      ))}
+                      ) : null}
+                      {step.bullets ? (
+                        <ul className="list-disc space-y-2 pl-5 text-base leading-relaxed text-slate marker:text-purple">
+                          {step.bullets.map((bullet) => (
+                            <li key={bullet}>{bullet}</li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
+                  ) : step.title === "The Solution" &&
+                    (step.paragraphs || step.subsections || step.closing) ? (
+                    <div className="mt-3 flex max-w-3xl flex-col gap-6">
+                      {step.paragraphs ? (
+                        <div className="flex flex-col gap-4">
+                          {step.paragraphs.map((paragraph) => (
+                            <p
+                              key={paragraph}
+                              className="text-base leading-relaxed text-slate"
+                            >
+                              {paragraph}
+                            </p>
+                          ))}
+                        </div>
+                      ) : null}
+
+                      {step.subsections
+                        ? step.subsections.map((subsection) => (
+                            <div
+                              key={subsection.title}
+                              className="rounded-2xl border border-violet-light/30 bg-violet-light/10 p-5"
+                            >
+                              <h3 className="font-heading text-lg font-semibold text-ink">
+                                {subsection.title}
+                              </h3>
+                              <div className="mt-3 flex flex-col gap-3">
+                                {subsection.paragraphs.map((paragraph) => (
+                                  <p
+                                    key={paragraph}
+                                    className="text-base leading-relaxed text-slate"
+                                  >
+                                    {paragraph}
+                                  </p>
+                                ))}
+                              </div>
+                            </div>
+                          ))
+                        : null}
+
+                      {step.closing ? (
+                        <div className="rounded-2xl border border-violet-light/20 bg-violet-deep p-5">
+                          <h3 className="font-heading text-lg font-semibold text-white">
+                            {step.closing.title}
+                          </h3>
+                          <p className="mt-3 text-base leading-relaxed text-lavender">
+                            {step.closing.text}
+                          </p>
+                        </div>
+                      ) : null}
                     </div>
                   ) : step.title === "The Result" && caseStudy.resultStats ? (
                     <div className="mt-3 flex max-w-3xl flex-col gap-6">
@@ -288,7 +374,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             {caseStudy.howItWorks ? (
               <div>
                 <h2 className="font-heading text-2xl font-semibold text-ink">
-                  How It Works
+                  How It Works: 3 Simple Steps
                 </h2>
                 <ol className="mt-6 grid gap-4 sm:grid-cols-3">
                   {caseStudy.howItWorks.map((item, index) => (
@@ -327,34 +413,46 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
               </div>
             ) : null}
 
-            <div>
-              <h2 className="font-heading text-2xl font-semibold text-ink">
-                Walkthrough Video
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate">
-                A short preview of how this workflow is put together.
-              </p>
-              <div className="mt-6">
-                {caseStudy.loomUrl ? (
+            {caseStudy.loomUrl ? (
+              <div>
+                <h2 className="font-heading text-2xl font-semibold text-ink">
+                  Walkthrough Video
+                </h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate">
+                  A short preview of how this workflow is put together.
+                </p>
+                <div className="mt-6">
                   <LoomFacade
                     loomUrl={caseStudy.loomUrl}
                     title={caseStudy.title}
                   />
-                ) : (
-                  <div className="flex aspect-video flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-violet-light/50 bg-violet-light/10 p-6 text-center">
-                    <span className="flex size-12 items-center justify-center rounded-full bg-violet-deep text-lavender">
-                      <Play aria-hidden className="ml-0.5 size-5 fill-current" />
-                    </span>
-                    <p className="font-heading text-lg font-semibold text-ink">
-                      Walkthrough video coming soon
-                    </p>
-                    <p className="max-w-sm text-sm leading-relaxed text-slate">
-                      This case study does not have a recorded walkthrough yet.
-                    </p>
-                  </div>
-                )}
+                </div>
+                {caseStudy.videoCaption ? (
+                  <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate">
+                    {caseStudy.videoCaption}
+                  </p>
+                ) : null}
               </div>
-            </div>
+            ) : caseStudy.postUrl ? (
+              <div className="rounded-2xl border border-violet-light/30 bg-violet-light/10 p-6">
+                <h2 className="font-heading text-2xl font-semibold text-ink">
+                  See It in Action
+                </h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate">
+                  See a short walkthrough of this workflow in a separate post.
+                </p>
+                <div className="mt-5">
+                  <Button
+                    href={caseStudy.postUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="focus-visible:ring-offset-lavender"
+                  >
+                    {caseStudy.postLabel || "View the post"}
+                  </Button>
+                </div>
+              </div>
+            ) : null}
 
             <div>
               <h2 className="font-heading text-2xl font-semibold text-ink">
@@ -389,6 +487,11 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                   </div>
                 )}
               </div>
+              {caseStudy.screenshotCaption ? (
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate">
+                  {caseStudy.screenshotCaption}
+                </p>
+              ) : null}
             </div>
           </div>
         </Container>

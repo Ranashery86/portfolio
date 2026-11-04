@@ -22,7 +22,8 @@ export function CaseStudies() {
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate">
               Five example projects showing how custom CRMs and n8n automation
-              can remove manual work. Each one includes a walkthrough video.
+              can remove manual work. Each one shows step by step how the system
+              works.
             </p>
           </div>
         </Reveal>
@@ -55,7 +56,7 @@ export function CaseStudies() {
                   </div>
 
                   <h3 className="mt-5 font-heading text-xl font-semibold text-white">
-                    {caseStudy.title}
+                    {caseStudy.cardTitle ?? caseStudy.title}
                   </h3>
                   <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-lavender">
                     {caseStudy.shortDescription}
