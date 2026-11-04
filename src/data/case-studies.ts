@@ -10,25 +10,120 @@ export type CaseStudy = {
   result: string;
   loomUrl: string;
   screenshot: string;
+  subtitle?: string;
+  problemParagraphs?: string[];
+  solutionParagraphs?: string[];
+  resultIntro?: string;
+  resultStats?: { value: string; label: string; assumption: string }[];
+  resultNote?: string;
+  resultBenefitsTitle?: string;
+  resultBenefits?: { title: string; text: string }[];
+  resultOutro?: string;
+  howItWorks?: { title: string; text: string }[];
+  howItWorksOutro?: string;
+  builtFor?: { title: string; text: string };
+  cta?: { heading: string; paragraphs: string[]; buttonLabel: string };
 };
 
 export const caseStudies: CaseStudy[] = [
   {
-    slug: "real-estate-lead-response",
-    title: "Real Estate: Lead Response from 2 Hours to 2 Minutes",
-    industry: "Real Estate",
-    metric: "2 min",
-    metricLabel: "lead response time",
+    slug: "client-onboarding-autopilot",
+    title: "Client Onboarding on Autopilot",
+    subtitle: "Save Time, Reduce Manual Work, and Never Miss a Step",
+    industry: "All Industries",
     shortDescription:
-      "Case study showing an automated lead response workflow for a real estate team.",
+      "A client onboarding system that saves each new client's details, sends a welcome email and a service roadmap, and notifies your team automatically.",
     problem:
-      "A real estate team receives leads from several portals and ad campaigns. Without a central intake process, new enquiries sit in shared inboxes for up to two hours, so interested buyers often speak to a competing agent first.",
+      "Every new client needs attention, and handling those steps manually makes onboarding slow, easy to miss, and harder to manage as the business grows.",
     solution:
-      "An n8n workflow collects every new lead, enriches the record with basic details, and routes it to the right agent. The lead receives an instant acknowledgement while the CRM creates a follow-up task and notifies the team in real time.",
+      "A client onboarding system that saves each new client's details, sends a welcome email and a service roadmap, and notifies the team automatically from the first form submission.",
     result:
-      "The first response time drops from roughly two hours to about two minutes. Fewer follow-ups are missed because every lead has an owner and a visible next step.",
+      "Onboarding is designed to be faster, more consistent, and easier to manage, with an estimated 10 hours per month saved.",
+    metric: "10 hrs/month",
+    metricLabel: "estimated time saved",
     loomUrl: "",
     screenshot: "",
+    problemParagraphs: [
+      "Every new client needs attention. Their details must be saved, welcome emails sent, next steps explained, and the right team members informed.",
+      "When all this happens manually, even a simple onboarding process can become time-consuming.",
+      "Emails may get delayed. Client information can be missed. Team members may not know when someone new signs up.",
+      "As the business grows, these small tasks add up. More time goes into managing the process instead of serving clients.",
+    ],
+    solutionParagraphs: [
+      "I built a client onboarding system that handles the entire process automatically, from the first form submission to the final team notification.",
+      "When a new client submits their details through a website form (any website or store), the system checks the information and saves the client record in a database (for example Google Sheets, Airtable, or any CRM).",
+      "The client then receives two personalized emails automatically (for example through Gmail or any email service).",
+      "The first is a warm welcome message.",
+      "The second is a clear service roadmap explaining what the client can expect, who will handle their service, how long it should take, and what happens next.",
+      "Once the emails are sent, the system updates the client record to show that onboarding is complete.",
+      "The internal team also receives a notification with the new client's details.",
+      "No need to manually copy information, write the same emails, or remind the team about every new signup.",
+    ],
+    resultIntro:
+      "The system is designed to make onboarding faster, more consistent, and easier to manage.",
+    resultStats: [
+      {
+        value: "Up to 10 hours per month",
+        label: "Estimated time saved",
+        assumption:
+          "Assumption: 20 new clients per month, with 30 minutes of manual onboarding work per client.",
+      },
+      {
+        value: "Up to $100 per month",
+        label: "Estimated labor cost savings",
+        assumption:
+          "Assumption: 10 hours of manual work avoided at an assumed labor cost of $10 per hour.",
+      },
+    ],
+    resultNote:
+      "These are illustrative estimates, not results measured from a real client.",
+    resultBenefitsTitle:
+      "Beyond the estimated savings, the system is designed to provide three practical benefits:",
+    resultBenefits: [
+      {
+        title: "Fewer missed steps",
+        text: "Client records, emails, and team notifications follow a consistent process.",
+      },
+      {
+        title: "A better first impression",
+        text: "Every new client receives a personal welcome and clear next steps.",
+      },
+      {
+        title: "Better team visibility",
+        text: "Client information and onboarding status stay organized in one place.",
+      },
+    ],
+    resultOutro:
+      "The business spends less time managing repetitive tasks and can focus more on delivering its services.",
+    howItWorks: [
+      {
+        title: "Step 1: A New Client Signs Up",
+        text: "A client fills out a form on your website. Their information is checked and saved automatically in your client database.",
+      },
+      {
+        title: "Step 2: The Client Gets a Personal Welcome",
+        text: "The system sends two personalized emails: a welcome message and a service roadmap explaining who will handle the service, the expected timeline, and the next steps.",
+      },
+      {
+        title: "Step 3: Your Team Stays Updated",
+        text: "The client record is marked as onboarded, and your team receives a notification with the new client's details.",
+      },
+    ],
+    howItWorksOutro:
+      "The process is handled automatically, without repeating the same manual work for every new signup.",
+    builtFor: {
+      title: "Built for Different Businesses",
+      text: "The same onboarding system can be adapted to almost any business that welcomes new clients or customers (e-commerce store, marketing agency, consultant, clinic). The forms, emails, client records, and service details can be customized to match how your business works.",
+    },
+    cta: {
+      heading: "Want to Automate Your Client Onboarding?",
+      paragraphs: [
+        "Every business has a different way of welcoming new clients. Your onboarding system should fit your process, not force you to change it.",
+        "I build Custom CRM + Full Automation, in one package, so your client information, follow-ups, and internal updates work together.",
+        "Book a call with me, and let's discuss how your business can save time, reduce manual work, and make client onboarding easier.",
+      ],
+      buttonLabel: "Book a Free Call",
+    },
   },
   {
     slug: "dental-clinic-no-shows",

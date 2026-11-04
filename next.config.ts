@@ -2,6 +2,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  async redirects() {
+    return [
+      {
+        source: "/case-studies/real-estate-lead-response",
+        destination: "/case-studies/client-onboarding-autopilot",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     qualities: [75, 80],
   },

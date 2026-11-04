@@ -42,7 +42,11 @@ export function CaseStudies() {
                   </div>
 
                   <div className="mt-6">
-                    <p className="font-heading text-4xl font-semibold text-white">
+                    <p
+                      className={`font-heading font-semibold whitespace-nowrap text-white ${
+                        caseStudy.metric.length > 8 ? "text-3xl" : "text-4xl"
+                      }`}
+                    >
                       {caseStudy.metric}
                     </p>
                     <p className="mt-1 text-xs tracking-[0.12em] text-lavender/70 uppercase">

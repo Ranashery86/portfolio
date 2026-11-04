@@ -70,9 +70,21 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
       : undefined;
 
   const steps = [
-    { title: "The Problem", body: caseStudy.problem },
-    { title: "The Solution", body: caseStudy.solution },
-    { title: "The Result", body: caseStudy.result },
+    {
+      title: "The Problem",
+      body: caseStudy.problem,
+      paragraphs: caseStudy.problemParagraphs,
+    },
+    {
+      title: "The Solution",
+      body: caseStudy.solution,
+      paragraphs: caseStudy.solutionParagraphs,
+    },
+    {
+      title: "The Result",
+      body: caseStudy.result,
+      paragraphs: undefined,
+    },
   ];
 
   const breadcrumbJsonLd = {
@@ -153,7 +165,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                 {caseStudy.title}
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-lavender">
-                {caseStudy.shortDescription}
+                {caseStudy.subtitle ?? caseStudy.shortDescription}
               </p>
             </div>
 
@@ -190,12 +202,130 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                   <h2 className="font-heading text-2xl font-semibold text-ink">
                     {step.title}
                   </h2>
-                  <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate">
-                    {step.body}
-                  </p>
+                  {step.paragraphs ? (
+                    <div className="mt-3 flex max-w-3xl flex-col gap-4">
+                      {step.paragraphs.map((paragraph) => (
+                        <p
+                          key={paragraph}
+                          className="text-base leading-relaxed text-slate"
+                        >
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
+                  ) : step.title === "The Result" && caseStudy.resultStats ? (
+                    <div className="mt-3 flex max-w-3xl flex-col gap-6">
+                      {caseStudy.resultIntro ? (
+                        <p className="text-base leading-relaxed text-slate">
+                          {caseStudy.resultIntro}
+                        </p>
+                      ) : null}
+
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        {caseStudy.resultStats.map((stat) => (
+                          <div
+                            key={stat.label}
+                            className="rounded-2xl border border-violet-light/20 bg-violet-deep p-5"
+                          >
+                            <p className="font-heading text-2xl font-semibold text-white">
+                              {stat.value}
+                            </p>
+                            <p className="mt-1 text-sm font-semibold text-lavender">
+                              {stat.label}
+                            </p>
+                            <p className="mt-3 text-xs leading-relaxed text-lavender/80 italic">
+                              {stat.assumption}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+
+                      {caseStudy.resultNote ? (
+                        <p className="text-xs leading-relaxed text-slate/80 italic">
+                          {caseStudy.resultNote}
+                        </p>
+                      ) : null}
+
+                      {caseStudy.resultBenefitsTitle ? (
+                        <p className="text-base leading-relaxed text-slate">
+                          {caseStudy.resultBenefitsTitle}
+                        </p>
+                      ) : null}
+
+                      {caseStudy.resultBenefits ? (
+                        <ul className="grid gap-4 sm:grid-cols-3">
+                          {caseStudy.resultBenefits.map((benefit) => (
+                            <li
+                              key={benefit.title}
+                              className="rounded-2xl border border-violet-light/30 bg-violet-light/10 p-5"
+                            >
+                              <p className="font-heading text-base font-semibold text-ink">
+                                {benefit.title}
+                              </p>
+                              <p className="mt-2 text-sm leading-relaxed text-slate">
+                                {benefit.text}
+                              </p>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+
+                      {caseStudy.resultOutro ? (
+                        <p className="text-base leading-relaxed text-slate">
+                          {caseStudy.resultOutro}
+                        </p>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate">
+                      {step.body}
+                    </p>
+                  )}
                 </li>
               ))}
             </ol>
+
+            {caseStudy.howItWorks ? (
+              <div>
+                <h2 className="font-heading text-2xl font-semibold text-ink">
+                  How It Works
+                </h2>
+                <ol className="mt-6 grid gap-4 sm:grid-cols-3">
+                  {caseStudy.howItWorks.map((item, index) => (
+                    <li
+                      key={item.title}
+                      className="rounded-2xl border border-violet-light/30 bg-violet-light/10 p-5"
+                    >
+                      <span className="flex size-9 items-center justify-center rounded-full bg-violet-deep font-heading text-sm font-semibold text-lavender">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="mt-4 font-heading text-base font-semibold text-ink">
+                        {item.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-slate">
+                        {item.text}
+                      </p>
+                    </li>
+                  ))}
+                </ol>
+                {caseStudy.howItWorksOutro ? (
+                  <p className="mt-5 max-w-2xl text-sm leading-relaxed text-slate">
+                    {caseStudy.howItWorksOutro}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
+
+            {caseStudy.builtFor ? (
+              <div className="rounded-2xl border border-violet-light/30 bg-violet-light/10 p-6">
+                <h2 className="font-heading text-2xl font-semibold text-ink">
+                  {caseStudy.builtFor.title}
+                </h2>
+                <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate">
+                  {caseStudy.builtFor.text}
+                </p>
+              </div>
+            ) : null}
 
             <div>
               <h2 className="font-heading text-2xl font-semibold text-ink">
@@ -268,18 +398,29 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         <Container className="py-16 sm:py-20">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Need something like this?
+              {caseStudy.cta?.heading ?? "Need something like this?"}
             </h2>
-            <p className="text-base leading-relaxed text-lavender">
-              Tell me what is slowing your team down, and I will map out the
-              workflow that removes the manual work.
-            </p>
+            {caseStudy.cta ? (
+              caseStudy.cta.paragraphs.map((paragraph) => (
+                <p
+                  key={paragraph}
+                  className="text-base leading-relaxed text-lavender"
+                >
+                  {paragraph}
+                </p>
+              ))
+            ) : (
+              <p className="text-base leading-relaxed text-lavender">
+                Tell me what is slowing your team down, and I will map out the
+                workflow that removes the manual work.
+              </p>
+            )}
             <Button
               href={siteConfig.calendlyUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Book a Free Call
+              {caseStudy.cta?.buttonLabel ?? "Book a Free Call"}
             </Button>
           </div>
         </Container>
