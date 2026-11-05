@@ -14,7 +14,10 @@ export type CaseStudy = {
   cardTitle?: string;
   problemParagraphs?: string[];
   problemBullets?: string[];
+  problemChallenge?: { label: string; text: string };
   solutionParagraphs?: string[];
+  solutionBullets?: { title: string; text: string }[];
+  solutionClosingParagraphs?: string[];
   solutionSubsections?: { title: string; paragraphs: string[] }[];
   solutionClosing?: { title: string; text: string };
   resultIntro?: string;
@@ -23,6 +26,7 @@ export type CaseStudy = {
   resultBenefitsTitle?: string;
   resultBenefits?: { title: string; text: string }[];
   resultOutro?: string;
+  howItWorksTitle?: string;
   howItWorks?: { title: string; text: string }[];
   howItWorksOutro?: string;
   builtFor?: { title: string; text: string };
@@ -168,21 +172,152 @@ export const caseStudies: CaseStudy[] = [
     screenshot: "",
   },
   {
-    slug: "ecommerce-invoices",
-    title: "E-commerce: Invoices and Reminders 100% Automatic",
-    industry: "E-commerce",
-    metric: "100%",
-    metricLabel: "automatic invoicing",
+    slug: "appointment-booking-chatbot",
+    title: "Let Customers Book Appointments 24/7 Without the Back-and-Forth",
+    cardTitle: "AI Appointment Booking Chatbot",
+    subtitle: "AI Appointment Booking Chatbot",
+    industry: "Appointment Businesses",
     shortDescription:
-      "Case study showing fully automated invoicing and payment reminders.",
+      "An AI chatbot that answers service questions, checks real availability, and handles bookings, rescheduling, and cancellations.",
     problem:
-      "An online store creates invoices manually after each order and sends payment reminders by hand. During busy periods, invoices are delayed and reminders are easy to miss.",
+      "Answering booking questions, checking availability, and managing schedule changes takes valuable staff time.",
     solution:
-      "An automation triggers invoice creation from each order event, sends the invoice to the customer, and schedules reminders until payment is received. Failed or overdue payments are flagged in a simple dashboard.",
+      "I built an AI chatbot that answers service questions, checks real availability, and handles bookings, rescheduling, and cancellations.",
     result:
-      "100% of invoices and reminders are sent without manual work. Fewer payments arrive late because every order follows the same automated follow-up sequence.",
+      "Less manual work, fewer scheduling mistakes, and a smoother booking experience for customers.",
+    metric: "2 hrs/week",
+    metricLabel: "estimated time saved",
     loomUrl: "",
     screenshot: "",
+    postUrl: "",
+    postLabel: "",
+    problemParagraphs: [
+      "Managing appointments can take more time than business owners realize.",
+      'Customers regularly ask questions like "Are you free tomorrow?", "How much does this service cost?", or "Can I change my appointment?"',
+      "Every request needs attention. Someone has to check the calendar, reply with available times, collect customer details, and update booking records.",
+      "When several customers contact the business at once, replies can be delayed. Appointments may overlap, customers may lose interest, and staff spend valuable time managing the same routine tasks.",
+      "Rescheduling and cancellations add even more work.",
+    ],
+    problemChallenge: {
+      label: "The challenge",
+      text: "Make appointment booking easier for customers without creating more administrative work for the business.",
+    },
+    solutionParagraphs: [
+      "I built an **AI Appointment Booking Chatbot** that works like a friendly receptionist directly on a business website.",
+      "Customers can ask questions and manage appointments through a simple conversation, without filling out long forms or waiting for someone to reply.",
+      "The chatbot can:",
+    ],
+    solutionBullets: [
+      {
+        title: "Answer service questions",
+        text: "Explain available services, prices, and durations using the business's actual service list, without making up information.",
+      },
+      {
+        title: "Check real availability",
+        text: "Look at the business calendar and offer times that are genuinely available.",
+      },
+      {
+        title: "Book appointments",
+        text: "Collect the necessary details, confirm the customer's choice, and create the appointment.",
+      },
+      {
+        title: "Prevent booking conflicts",
+        text: "Check for full or partial overlaps and check availability again before creating the booking.",
+      },
+      {
+        title: "Follow business hours",
+        text: "Accept only future appointments within the business's working hours.",
+      },
+      {
+        title: "Reschedule appointments",
+        text: "Find a new available time and update the existing booking.",
+      },
+      {
+        title: "Cancel appointments",
+        text: "Remove cancelled appointments from the calendar and update the booking record.",
+      },
+      {
+        title: "Keep records organized",
+        text: "Save bookings with unique Booking IDs in the business's records.",
+      },
+      {
+        title: "Send confirmation emails",
+        text: "Automatically email customers when their appointments are booked, changed, or cancelled.",
+      },
+      {
+        title: "Remember the conversation",
+        text: "Keep track of details already shared so customers don't need to repeat themselves.",
+      },
+    ],
+    solutionClosingParagraphs: [
+      "The chatbot uses the business's existing service information, calendar, and booking records.",
+      "Customers get a straightforward booking experience, while the business spends less time handling routine appointment messages.",
+    ],
+    resultIntro:
+      "This case study shows how an appointment-based business can reduce manual scheduling work while giving customers a faster way to book.",
+    resultStats: [
+      {
+        value: "2 hours per week",
+        label: "Estimated time savings",
+        assumption:
+          "Less time spent answering routine booking messages.",
+      },
+      {
+        value: "$30 per week",
+        label: "Estimated staff cost savings",
+        assumption: "Based on an example staff cost of $15 per hour.",
+      },
+    ],
+    resultNote:
+      "Estimate assumptions: 40 booking messages per week, 5 minutes of manual work per message, and 60% of that work automated. These are illustrative estimates, not measured client results. Actual savings depend on booking volume and business operations.",
+    resultBenefits: [
+      {
+        title: "Less time spent on routine messages",
+        text: "Customers can check services, prices, and available times without requiring staff to answer every question.",
+      },
+      {
+        title: "Lower administrative costs",
+        text: "Automating repetitive booking tasks can reduce the staff time needed to manage appointments.",
+      },
+      {
+        title: "Fewer scheduling mistakes",
+        text: "Availability checks help prevent overlapping appointments, while automatic record updates reduce the chance of outdated booking information.",
+      },
+      {
+        title: "A better customer experience",
+        text: "Customers can book, reschedule, or cancel through a simple conversation, at any time.",
+      },
+    ],
+    howItWorksTitle: "How It Works",
+    howItWorks: [
+      {
+        title: "Step 1: Customer Starts a Conversation",
+        text: "A customer opens the website chatbot and asks about services, prices, or available appointments.\n\nThe chatbot answers using the business's service information and collects booking details one question at a time.",
+      },
+      {
+        title: "Step 2: Availability Is Checked and Booking Is Confirmed",
+        text: "The chatbot checks the calendar, working hours, and appointment duration.\n\nIf the requested time is unavailable, it suggests alternative times.\n\nBefore booking, it repeats the details and asks the customer to confirm. Once confirmed, it checks availability again and creates the appointment.",
+      },
+      {
+        title: "Step 3: Records and Appointments Stay Updated",
+        text: "The confirmed appointment is saved in the business calendar and booking records with a unique Booking ID. The customer receives a confirmation email.\n\nIf the customer returns to reschedule or cancel using their Booking ID, the chatbot handles the request and automatically updates the calendar, records, and email confirmation.",
+      },
+    ],
+    builtFor: {
+      title: "Works for Any Appointment-Based Business",
+      text: "This chatbot can be adapted to almost any business that accepts appointments (for example, a dental clinic, hair salon, consulting firm, or car repair shop). Services, prices, working hours, and booking rules can be customized to fit the business, without changing how customers interact with the chatbot.",
+    },
+    videoCaption:
+      "Watch the appointment booking chatbot in action, from answering service questions to booking and managing appointments.",
+    screenshotCaption:
+      "A behind-the-scenes look at how appointment requests, availability checks, booking records, and confirmations are handled automatically.",
+    cta: {
+      heading: "Want a Booking Assistant Like This for Your Business?",
+      paragraphs: [
+        "Still spending hours answering booking messages and managing appointments? I can build a similar system around your business, including a custom CRM and full automation in one package.",
+      ],
+      buttonLabel: "Book a Free Discovery Call",
+    },
   },
   {
     slug: "ai-ecommerce-support-chatbot",

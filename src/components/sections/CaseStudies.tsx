@@ -58,7 +58,7 @@ export function CaseStudies() {
                   <h3 className="mt-5 font-heading text-xl font-semibold text-white">
                     {caseStudy.cardTitle ?? caseStudy.title}
                   </h3>
-                  <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-lavender">
+                  <p className="mt-3 text-sm leading-relaxed text-lavender">
                     {caseStudy.shortDescription}
                   </p>
 

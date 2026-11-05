@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         destination: "/case-studies/ai-ecommerce-support-chatbot",
         permanent: true,
       },
+      {
+        source: "/case-studies/ecommerce-invoices",
+        destination: "/case-studies/appointment-booking-chatbot",
+        permanent: true,
+      },
     ];
   },
   images: {

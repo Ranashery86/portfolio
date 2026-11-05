@@ -1,8 +1,9 @@
+import { Fragment, type ReactNode } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, ImageIcon } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ImageIcon } from "lucide-react";
 
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Button } from "@/components/ui/Button";
@@ -15,6 +16,23 @@ import { siteConfig } from "@/data/site";
 type CaseStudyPageProps = {
   params: Promise<{ slug: string }>;
 };
+
+function renderRichText(text: string): ReactNode {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={index}>{part.slice(2, -2)}</strong>;
+    }
+
+    return <Fragment key={index}>{part}</Fragment>;
+  });
+}
+
+function splitParagraphs(text: string): string[] {
+  return text
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+}
 
 export function generateStaticParams() {
   return caseStudies.map((caseStudy) => ({ slug: caseStudy.slug }));
@@ -224,7 +242,9 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                     {step.title}
                   </h2>
                   {step.title === "The Problem" &&
-                  (step.paragraphs || step.bullets) ? (
+                  (step.paragraphs ||
+                    step.bullets ||
+                    caseStudy.problemChallenge) ? (
                     <div className="mt-3 flex max-w-3xl flex-col gap-4">
                       {step.paragraphs ? (
                         step.paragraphs.map((paragraph) => (
@@ -232,25 +252,39 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                             key={paragraph}
                             className="text-base leading-relaxed text-slate"
                           >
-                            {paragraph}
+                            {renderRichText(paragraph)}
                           </p>
                         ))
                       ) : null}
                       {step.listIntro ? (
                         <p className="text-base leading-relaxed text-slate">
-                          {step.listIntro}
+                          {renderRichText(step.listIntro)}
                         </p>
                       ) : null}
                       {step.bullets ? (
                         <ul className="list-disc space-y-2 pl-5 text-base leading-relaxed text-slate marker:text-purple">
                           {step.bullets.map((bullet) => (
-                            <li key={bullet}>{bullet}</li>
+                            <li key={bullet}>{renderRichText(bullet)}</li>
                           ))}
                         </ul>
                       ) : null}
+                      {caseStudy.problemChallenge ? (
+                        <div className="rounded-2xl border-l-4 border-violet-light bg-violet-light/10 px-5 py-4">
+                          <p className="text-xs font-semibold tracking-[0.14em] text-violet-light uppercase">
+                            {caseStudy.problemChallenge.label}
+                          </p>
+                          <p className="mt-2 text-base leading-relaxed text-slate">
+                            {renderRichText(caseStudy.problemChallenge.text)}
+                          </p>
+                        </div>
+                      ) : null}
                     </div>
                   ) : step.title === "The Solution" &&
-                    (step.paragraphs || step.subsections || step.closing) ? (
+                    (step.paragraphs ||
+                      step.subsections ||
+                      step.closing ||
+                      caseStudy.solutionBullets ||
+                      caseStudy.solutionClosingParagraphs) ? (
                     <div className="mt-3 flex max-w-3xl flex-col gap-6">
                       {step.paragraphs ? (
                         <div className="flex flex-col gap-4">
@@ -259,9 +293,47 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                               key={paragraph}
                               className="text-base leading-relaxed text-slate"
                             >
-                              {paragraph}
+                              {renderRichText(paragraph)}
                             </p>
                           ))}
+                        </div>
+                      ) : null}
+
+                      {caseStudy.solutionBullets ? (
+                        <ul className="grid gap-4 sm:grid-cols-2">
+                          {caseStudy.solutionBullets.map((bullet) => (
+                            <li
+                              key={bullet.title}
+                              className="flex gap-3 rounded-2xl border border-violet-light/30 bg-violet-light/10 p-5"
+                            >
+                              <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-violet-deep text-lavender">
+                                <Check aria-hidden className="size-3.5" />
+                              </span>
+                              <div>
+                                <p className="font-heading text-base font-semibold text-ink">
+                                  {renderRichText(bullet.title)}
+                                </p>
+                                <p className="mt-1 text-sm leading-relaxed text-slate">
+                                  {renderRichText(bullet.text)}
+                                </p>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+
+                      {caseStudy.solutionClosingParagraphs ? (
+                        <div className="flex flex-col gap-4">
+                          {caseStudy.solutionClosingParagraphs.map(
+                            (paragraph) => (
+                              <p
+                                key={paragraph}
+                                className="text-base leading-relaxed text-slate"
+                              >
+                                {renderRichText(paragraph)}
+                              </p>
+                            ),
+                          )}
                         </div>
                       ) : null}
 
@@ -280,7 +352,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                                     key={paragraph}
                                     className="text-base leading-relaxed text-slate"
                                   >
-                                    {paragraph}
+                                    {renderRichText(paragraph)}
                                   </p>
                                 ))}
                               </div>
@@ -294,7 +366,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                             {step.closing.title}
                           </h3>
                           <p className="mt-3 text-base leading-relaxed text-lavender">
-                            {step.closing.text}
+                            {renderRichText(step.closing.text)}
                           </p>
                         </div>
                       ) : null}
@@ -303,7 +375,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                     <div className="mt-3 flex max-w-3xl flex-col gap-6">
                       {caseStudy.resultIntro ? (
                         <p className="text-base leading-relaxed text-slate">
-                          {caseStudy.resultIntro}
+                          {renderRichText(caseStudy.resultIntro)}
                         </p>
                       ) : null}
 
@@ -314,13 +386,13 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                             className="rounded-2xl border border-violet-light/20 bg-violet-deep p-5"
                           >
                             <p className="font-heading text-2xl font-semibold text-white">
-                              {stat.value}
+                              {renderRichText(stat.value)}
                             </p>
                             <p className="mt-1 text-sm font-semibold text-lavender">
-                              {stat.label}
+                              {renderRichText(stat.label)}
                             </p>
                             <p className="mt-3 text-xs leading-relaxed text-lavender/80 italic">
-                              {stat.assumption}
+                              {renderRichText(stat.assumption)}
                             </p>
                           </div>
                         ))}
@@ -328,13 +400,13 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
 
                       {caseStudy.resultNote ? (
                         <p className="text-xs leading-relaxed text-slate/80 italic">
-                          {caseStudy.resultNote}
+                          {renderRichText(caseStudy.resultNote)}
                         </p>
                       ) : null}
 
                       {caseStudy.resultBenefitsTitle ? (
                         <p className="text-base leading-relaxed text-slate">
-                          {caseStudy.resultBenefitsTitle}
+                          {renderRichText(caseStudy.resultBenefitsTitle)}
                         </p>
                       ) : null}
 
@@ -346,10 +418,10 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                               className="rounded-2xl border border-violet-light/30 bg-violet-light/10 p-5"
                             >
                               <p className="font-heading text-base font-semibold text-ink">
-                                {benefit.title}
+                                {renderRichText(benefit.title)}
                               </p>
                               <p className="mt-2 text-sm leading-relaxed text-slate">
-                                {benefit.text}
+                                {renderRichText(benefit.text)}
                               </p>
                             </li>
                           ))}
@@ -358,7 +430,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
 
                       {caseStudy.resultOutro ? (
                         <p className="text-base leading-relaxed text-slate">
-                          {caseStudy.resultOutro}
+                          {renderRichText(caseStudy.resultOutro)}
                         </p>
                       ) : null}
                     </div>
@@ -374,7 +446,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             {caseStudy.howItWorks ? (
               <div>
                 <h2 className="font-heading text-2xl font-semibold text-ink">
-                  How It Works: 3 Simple Steps
+                  {caseStudy.howItWorksTitle ?? "How It Works: 3 Simple Steps"}
                 </h2>
                 <ol className="mt-6 grid gap-4 sm:grid-cols-3">
                   {caseStudy.howItWorks.map((item, index) => (
@@ -388,15 +460,17 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                       <h3 className="mt-4 font-heading text-base font-semibold text-ink">
                         {item.title}
                       </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-slate">
-                        {item.text}
-                      </p>
+                      <div className="mt-2 flex flex-col gap-2 text-sm leading-relaxed text-slate">
+                        {splitParagraphs(item.text).map((paragraph) => (
+                          <p key={paragraph}>{renderRichText(paragraph)}</p>
+                        ))}
+                      </div>
                     </li>
                   ))}
                 </ol>
                 {caseStudy.howItWorksOutro ? (
                   <p className="mt-5 max-w-2xl text-sm leading-relaxed text-slate">
-                    {caseStudy.howItWorksOutro}
+                    {renderRichText(caseStudy.howItWorksOutro)}
                   </p>
                 ) : null}
               </div>
@@ -408,7 +482,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                   {caseStudy.builtFor.title}
                 </h2>
                 <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate">
-                  {caseStudy.builtFor.text}
+                  {renderRichText(caseStudy.builtFor.text)}
                 </p>
               </div>
             ) : null}
@@ -429,7 +503,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                 </div>
                 {caseStudy.videoCaption ? (
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate">
-                    {caseStudy.videoCaption}
+                    {renderRichText(caseStudy.videoCaption)}
                   </p>
                 ) : null}
               </div>
@@ -489,7 +563,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
               </div>
               {caseStudy.screenshotCaption ? (
                 <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate">
-                  {caseStudy.screenshotCaption}
+                  {renderRichText(caseStudy.screenshotCaption)}
                 </p>
               ) : null}
             </div>
@@ -509,7 +583,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                   key={paragraph}
                   className="text-base leading-relaxed text-lavender"
                 >
-                  {paragraph}
+                  {renderRichText(paragraph)}
                 </p>
               ))
             ) : (
