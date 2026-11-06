@@ -244,8 +244,15 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                   {step.title === "The Problem" &&
                   (step.paragraphs ||
                     step.bullets ||
+                    caseStudy.problemLead ||
+                    caseStudy.problemClosingParagraphs ||
                     caseStudy.problemChallenge) ? (
                     <div className="mt-3 flex max-w-3xl flex-col gap-4">
+                      {caseStudy.problemLead ? (
+                        <p className="font-heading text-lg font-semibold leading-relaxed text-ink sm:text-xl">
+                          {renderRichText(caseStudy.problemLead)}
+                        </p>
+                      ) : null}
                       {step.paragraphs ? (
                         step.paragraphs.map((paragraph) => (
                           <p
@@ -268,6 +275,20 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                           ))}
                         </ul>
                       ) : null}
+                      {caseStudy.problemClosingParagraphs ? (
+                        <div className="flex flex-col gap-4">
+                          {caseStudy.problemClosingParagraphs.map(
+                            (paragraph) => (
+                              <p
+                                key={paragraph}
+                                className="text-base leading-relaxed text-slate"
+                              >
+                                {renderRichText(paragraph)}
+                              </p>
+                            ),
+                          )}
+                        </div>
+                      ) : null}
                       {caseStudy.problemChallenge ? (
                         <div className="rounded-2xl border-l-4 border-violet-light bg-violet-light/10 px-5 py-4">
                           <p className="text-xs font-semibold tracking-[0.14em] text-violet-light uppercase">
@@ -283,9 +304,18 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                     (step.paragraphs ||
                       step.subsections ||
                       step.closing ||
+                      caseStudy.solutionLead ||
+                      caseStudy.solutionPipeline ||
+                      caseStudy.solutionAfterPipelineParagraphs ||
                       caseStudy.solutionBullets ||
                       caseStudy.solutionClosingParagraphs) ? (
                     <div className="mt-3 flex max-w-3xl flex-col gap-6">
+                      {caseStudy.solutionLead ? (
+                        <p className="font-heading text-lg font-semibold leading-relaxed text-ink sm:text-xl">
+                          {renderRichText(caseStudy.solutionLead)}
+                        </p>
+                      ) : null}
+
                       {step.paragraphs ? (
                         <div className="flex flex-col gap-4">
                           {step.paragraphs.map((paragraph) => (
@@ -322,9 +352,41 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                         </ul>
                       ) : null}
 
-                      {caseStudy.solutionClosingParagraphs ? (
+                      {caseStudy.solutionPipeline ? (
+                        <div
+                          role="group"
+                          aria-label="Sales pipeline stages"
+                        >
+                          <p className="sr-only">
+                            New, then Contacted, then Quote Sent, then Won or
+                            Lost
+                          </p>
+                          <ol className="flex flex-wrap items-center gap-2">
+                            {caseStudy.solutionPipeline.map(
+                              (stage, index, stages) => (
+                                <li
+                                  key={stage}
+                                  className="flex items-center gap-2"
+                                >
+                                  <span className="rounded-full border border-violet-light bg-violet-deep px-4 py-2 font-heading text-sm font-semibold text-white">
+                                    {stage}
+                                  </span>
+                                  {index < stages.length - 1 ? (
+                                    <ArrowRight
+                                      aria-hidden
+                                      className="size-4 text-purple"
+                                    />
+                                  ) : null}
+                                </li>
+                              ),
+                            )}
+                          </ol>
+                        </div>
+                      ) : null}
+
+                      {caseStudy.solutionAfterPipelineParagraphs ? (
                         <div className="flex flex-col gap-4">
-                          {caseStudy.solutionClosingParagraphs.map(
+                          {caseStudy.solutionAfterPipelineParagraphs.map(
                             (paragraph) => (
                               <p
                                 key={paragraph}
@@ -360,6 +422,21 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                           ))
                         : null}
 
+                      {caseStudy.solutionClosingParagraphs ? (
+                        <div className="flex flex-col gap-4">
+                          {caseStudy.solutionClosingParagraphs.map(
+                            (paragraph) => (
+                              <p
+                                key={paragraph}
+                                className="text-base leading-relaxed text-slate"
+                              >
+                                {renderRichText(paragraph)}
+                              </p>
+                            ),
+                          )}
+                        </div>
+                      ) : null}
+
                       {step.closing ? (
                         <div className="rounded-2xl border border-violet-light/20 bg-violet-deep p-5">
                           <h3 className="font-heading text-lg font-semibold text-white">
@@ -373,6 +450,12 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                     </div>
                   ) : step.title === "The Result" && caseStudy.resultStats ? (
                     <div className="mt-3 flex max-w-3xl flex-col gap-6">
+                      {caseStudy.resultLead ? (
+                        <p className="font-heading text-lg font-semibold leading-relaxed text-ink sm:text-xl">
+                          {renderRichText(caseStudy.resultLead)}
+                        </p>
+                      ) : null}
+
                       {caseStudy.resultIntro ? (
                         <p className="text-base leading-relaxed text-slate">
                           {renderRichText(caseStudy.resultIntro)}
@@ -484,6 +567,11 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                 <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate">
                   {renderRichText(caseStudy.builtFor.text)}
                 </p>
+                {caseStudy.builtForNote ? (
+                  <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate/80">
+                    {renderRichText(caseStudy.builtForNote)}
+                  </p>
+                ) : null}
               </div>
             ) : null}
 

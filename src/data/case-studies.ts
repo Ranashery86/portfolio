@@ -12,13 +12,19 @@ export type CaseStudy = {
   screenshot: string;
   subtitle?: string;
   cardTitle?: string;
+  problemLead?: string;
   problemParagraphs?: string[];
   problemBullets?: string[];
+  problemClosingParagraphs?: string[];
   problemChallenge?: { label: string; text: string };
+  solutionLead?: string;
   solutionParagraphs?: string[];
+  solutionPipeline?: string[];
+  solutionAfterPipelineParagraphs?: string[];
   solutionBullets?: { title: string; text: string }[];
   solutionClosingParagraphs?: string[];
   solutionSubsections?: { title: string; paragraphs: string[] }[];
+  resultLead?: string;
   solutionClosing?: { title: string; text: string };
   resultIntro?: string;
   resultStats?: { value: string; label: string; assumption: string }[];
@@ -30,6 +36,7 @@ export type CaseStudy = {
   howItWorks?: { title: string; text: string }[];
   howItWorksOutro?: string;
   builtFor?: { title: string; text: string };
+  builtForNote?: string;
   cta?: { heading: string; paragraphs: string[]; buttonLabel: string };
   videoCaption?: string;
   screenshotCaption?: string;
@@ -138,21 +145,147 @@ export const caseStudies: CaseStudy[] = [
     },
   },
   {
-    slug: "dental-clinic-no-shows",
-    title: "Dental Clinic: 40% Fewer No-Shows",
-    industry: "Healthcare",
-    metric: "40%",
-    metricLabel: "fewer no-shows",
+    slug: "sales-pipeline-crm",
+    title: "Never Lose Track of a Sales Lead Again",
+    cardTitle: "Custom Sales CRM with Automated Follow-Ups",
+    subtitle: "Sales Pipeline CRM Automation",
+    industry: "Sales and Lead Management",
     shortDescription:
-      "Case study showing automated appointment reminders for a dental clinic.",
-    problem:
-      "A dental clinic relies on manual reminder calls and a paper appointment book. Last-minute cancellations leave gaps in the schedule, and the front desk spends hours chasing confirmations each week.",
-    solution:
-      "A reminder workflow sends SMS and email confirmations at set intervals before each appointment. Patients can reschedule with one link, and the clinic calendar and CRM update automatically when they respond.",
-    result:
-      "No-shows fall by 40% and reception spends less time on admin. Any remaining gaps can be offered to a waitlist automatically.",
+      "A custom sales CRM that captures enquiries, tracks deals on a visual pipeline, and sends follow-ups automatically.",
+    metric: "8-10 hrs/month",
+    metricLabel: "estimated time saved",
     loomUrl: "",
     screenshot: "",
+    postUrl: "",
+    postLabel: "",
+    problem:
+      "Sales enquiries get lost in emails and spreadsheets. Follow-ups are forgotten, and deals become difficult to track.",
+    solution:
+      "I built a custom sales CRM that captures enquiries, tracks deals on a visual pipeline, and sends follow-ups automatically.",
+    result:
+      "Less manual tracking, fewer duplicate records, and better visibility into every sales opportunity.",
+    problemLead: "A new enquiry is only valuable if someone follows up.",
+    problemParagraphs: [
+      "Many businesses receive enquiries through their websites but still manage sales manually.",
+      "Leads end up scattered across emails and spreadsheets. Some are entered twice. Others are forgotten after the first conversation.",
+      "As more enquiries arrive, keeping track becomes difficult.",
+      "Business owners often struggle to answer simple questions:",
+    ],
+    problemBullets: [
+      "Which leads need attention today?",
+      "Who has already received a follow-up?",
+      "Which deals are waiting for a decision?",
+      "How much potential business is still in the pipeline?",
+    ],
+    problemClosingParagraphs: [
+      "Without one clear system, sales tracking takes more time than necessary, and opportunities can slip away.",
+    ],
+    solutionLead:
+      "One custom CRM. Every lead tracked. Follow-ups handled automatically.",
+    solutionParagraphs: [
+      "I built a custom sales CRM that brings enquiries, deal tracking, and follow-ups together in one place.",
+      "When someone submits an enquiry through a website form (any website, landing page, or contact form), the system checks the details and prevents duplicate email entries.",
+      'The new lead is saved in a database (for example Supabase, Airtable, or any CRM) and marked as "New".',
+      "The customer receives a friendly acknowledgement email, while the business owner gets a notification with the enquiry details.",
+      "A custom dashboard gives the team a clear visual sales pipeline with five stages:",
+    ],
+    solutionPipeline: ["New", "Contacted", "Quote Sent", "Won", "Lost"],
+    solutionAfterPipelineParagraphs: [
+      "Each lead card shows the customer's name, company, deal value, source, and time since the last activity.",
+      "The team can drag leads between stages. Every change is recorded in the lead's activity history.",
+      "The dashboard also shows important numbers, including total leads, active deals, pipeline value, won deals, follow-ups due, and leads that have gone quiet.",
+    ],
+    solutionSubsections: [
+      {
+        title: "Follow-ups happen automatically.",
+        paragraphs: [
+          "Active leads can receive up to three short, polite follow-up emails around days 1, 3, and 7, each with a different message.",
+          "Once a deal is marked Won or Lost, the follow-ups stop.",
+          "If a lead has had no activity for more than seven days, it is included in a summary email to the owner.",
+        ],
+      },
+    ],
+    solutionClosingParagraphs: [
+      "This gives the business a clearer sales process without relying on someone to remember every task.",
+    ],
+    resultLead: "Less admin work. Better organization. Fewer missed follow-ups.",
+    resultIntro:
+      "This case study shows how a business could benefit from managing its sales process in one connected system.",
+    resultStats: [
+      {
+        value: "8-10 hours per month",
+        label: "Estimated time saved",
+        assumption:
+          "Assumption: 50 new enquiries per month, with 10-12 minutes of manual tracking and follow-up work per lead.",
+      },
+      {
+        value: "$80-$100 per month",
+        label: "Estimated admin cost savings",
+        assumption:
+          "Assumption: 8-10 hours saved monthly at an assumed administrative labor cost of $10 per hour.",
+      },
+    ],
+    resultNote:
+      "These are illustrative estimates, not measured results from a real client. Actual savings depend on enquiry volume and the business's existing process.",
+    resultBenefitsTitle: "Other practical benefits include:",
+    resultBenefits: [
+      {
+        title: "Fewer mistakes",
+        text: "Duplicate email entries are prevented automatically.",
+      },
+      {
+        title: "More consistent follow-ups",
+        text: "Active leads receive scheduled messages without manual reminders.",
+      },
+      {
+        title: "Clearer sales visibility",
+        text: "The owner can see active deals and pipeline value in one dashboard.",
+      },
+      {
+        title: "Better team coordination",
+        text: "Every lead has an activity history showing what happened and when.",
+      },
+      {
+        title: "Less manual checking",
+        text: "Quiet leads are brought to the owner's attention.",
+      },
+    ],
+    resultOutro:
+      "The goal is simple: spend less time managing sales records and more time speaking with potential customers.",
+    howItWorksTitle: "How It Works",
+    howItWorks: [
+      {
+        title: "Step 1: Capture Every Enquiry",
+        text: 'A customer submits an enquiry on the business website.\n\nThe system checks for duplicate email entries, saves the lead, sends the customer an acknowledgement email, and alerts the owner.\n\nThe lead appears in the CRM under "New".',
+      },
+      {
+        title: "Step 2: Track Every Deal",
+        text: "The team sees all leads on a visual pipeline board.\n\nAs conversations progress, leads move through Contacted, Quote Sent, Won, or Lost.\n\nThe dashboard updates, and each lead's activity history records the changes.",
+      },
+      {
+        title: "Step 3: Follow Up Without Forgetting",
+        text: "Active leads receive scheduled follow-up emails around days 1, 3, and 7.\n\nFollow-ups stop when a deal is marked Won or Lost.\n\nThe owner also receives a summary of leads with no activity for more than seven days, helping the team identify opportunities that need attention.",
+      },
+    ],
+    builtFor: {
+      title: "Works for Any Business",
+      text: "This CRM can be adapted to businesses that manage customer enquiries, sales conversations, and deals (for example, a web design agency, solar installer, accounting firm, or equipment supplier). Sales stages, follow-up messages, and dashboard details can be adjusted to match each business's process.",
+    },
+    builtForNote:
+      "Possible extension: When a deal is won, the CRM can also be connected to a client onboarding system to welcome the new customer automatically.",
+    videoCaption:
+      "See how the custom CRM captures enquiries, tracks deals through the sales pipeline, and handles follow-ups automatically.",
+    screenshotCaption:
+      "Behind the scenes: the automated process that manages new enquiries, prevents duplicates, sends follow-ups, and keeps lead records updated.",
+    cta: {
+      heading:
+        "Your sales process should help you win customers, not create more admin work.",
+      paragraphs: [
+        "I build custom CRMs with complete automation, tailored to how your business operates.",
+        "Let's discuss how we can simplify your sales process, reduce manual work, and keep your leads organized.",
+      ],
+      buttonLabel: "Book a Free Discovery Call",
+    },
   },
   {
     slug: "agency-crm",

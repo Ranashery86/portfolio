@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
         destination: "/case-studies/appointment-booking-chatbot",
         permanent: true,
       },
+      {
+        source: "/case-studies/dental-clinic-no-shows",
+        destination: "/case-studies/sales-pipeline-crm",
+        permanent: true,
+      },
     ];
   },
   images: {
