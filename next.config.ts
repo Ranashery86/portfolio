@@ -24,10 +24,15 @@ const nextConfig: NextConfig = {
         destination: "/case-studies/sales-pipeline-crm",
         permanent: true,
       },
+      {
+        source: "/case-studies/agency-crm",
+        destination: "/case-studies/email-order-tracking",
+        permanent: true,
+      },
     ];
   },
   images: {
-    qualities: [75, 80],
+    qualities: [75, 80, 85],
   },
   cacheComponents: true,
   partialPrefetching: true,

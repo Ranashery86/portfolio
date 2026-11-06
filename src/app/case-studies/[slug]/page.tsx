@@ -3,14 +3,20 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check, ImageIcon } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
+import { ImageLightbox } from "@/components/case-studies/ImageLightbox";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { LoomFacade } from "@/components/ui/LoomFacade";
 import { Section } from "@/components/ui/Section";
-import { caseStudies, getCaseStudyBySlug } from "@/data/case-studies";
+import {
+  caseStudies,
+  getCaseStudyBySlug,
+  type CaseStudyVisual,
+} from "@/data/case-studies";
+import { findCaseStudyImage } from "@/lib/case-study-media";
 import { siteConfig } from "@/data/site";
 
 type CaseStudyPageProps = {
@@ -32,6 +38,39 @@ function splitParagraphs(text: string): string[] {
     .split(/\n{2,}/)
     .map((paragraph) => paragraph.trim())
     .filter(Boolean);
+}
+
+type ResolvedCaseStudyVisual = CaseStudyVisual & {
+  image: { src: string; width: number; height: number };
+};
+
+function CaseStudyFigure({ visual }: { visual: ResolvedCaseStudyVisual }) {
+  return (
+    <figure className="overflow-hidden rounded-2xl border border-violet-light/30 bg-violet-light/10 shadow-[0_0_50px_-18px_rgba(139,124,199,0.65)]">
+      <ImageLightbox
+        src={visual.image.src}
+        alt={visual.alt}
+        width={visual.image.width}
+        height={visual.image.height}
+      >
+        <Image
+          src={visual.image.src}
+          alt={visual.alt}
+          width={visual.image.width}
+          height={visual.image.height}
+          sizes="(min-width: 1024px) 960px, 100vw"
+          quality={85}
+          loading="lazy"
+          className="h-auto w-full"
+        />
+      </ImageLightbox>
+      {visual.caption ? (
+        <figcaption className="px-4 py-3 text-xs leading-relaxed text-slate sm:text-sm">
+          {renderRichText(visual.caption)}
+        </figcaption>
+      ) : null}
+    </figure>
+  );
 }
 
 export function generateStaticParams() {
@@ -77,6 +116,28 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   if (!caseStudy) {
     notFound();
   }
+
+  const resolvedVisuals: ResolvedCaseStudyVisual[] = [];
+
+  for (const visual of caseStudy.visuals ?? []) {
+    const image = findCaseStudyImage(caseStudy.slug, visual.key);
+
+    if (image) {
+      resolvedVisuals.push({ ...visual, image });
+    } else if (visual.key === "workflow" && caseStudy.screenshot) {
+      resolvedVisuals.push({
+        ...visual,
+        image: { src: caseStudy.screenshot, width: 1600, height: 900 },
+      });
+    }
+  }
+
+  const afterSolutionVisuals = resolvedVisuals.filter(
+    (visual) => visual.placement === "afterSolution",
+  );
+  const afterHowItWorksVisuals = resolvedVisuals.filter(
+    (visual) => visual.placement === "afterHowItWorks",
+  );
 
   const currentIndex = caseStudies.findIndex(
     (entry) => entry.slug === caseStudy.slug,
@@ -307,6 +368,8 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                       caseStudy.solutionLead ||
                       caseStudy.solutionPipeline ||
                       caseStudy.solutionAfterPipelineParagraphs ||
+                      caseStudy.solutionPlainBullets ||
+                      caseStudy.solutionAfterBulletsParagraphs ||
                       caseStudy.solutionBullets ||
                       caseStudy.solutionClosingParagraphs) ? (
                     <div className="mt-3 flex max-w-3xl flex-col gap-6">
@@ -327,29 +390,6 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                             </p>
                           ))}
                         </div>
-                      ) : null}
-
-                      {caseStudy.solutionBullets ? (
-                        <ul className="grid gap-4 sm:grid-cols-2">
-                          {caseStudy.solutionBullets.map((bullet) => (
-                            <li
-                              key={bullet.title}
-                              className="flex gap-3 rounded-2xl border border-violet-light/30 bg-violet-light/10 p-5"
-                            >
-                              <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-violet-deep text-lavender">
-                                <Check aria-hidden className="size-3.5" />
-                              </span>
-                              <div>
-                                <p className="font-heading text-base font-semibold text-ink">
-                                  {renderRichText(bullet.title)}
-                                </p>
-                                <p className="mt-1 text-sm leading-relaxed text-slate">
-                                  {renderRichText(bullet.text)}
-                                </p>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
                       ) : null}
 
                       {caseStudy.solutionPipeline ? (
@@ -399,6 +439,29 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                         </div>
                       ) : null}
 
+                      {caseStudy.solutionPlainBullets ? (
+                        <ul className="list-disc space-y-2 pl-5 text-base leading-relaxed text-slate marker:text-purple">
+                          {caseStudy.solutionPlainBullets.map((bullet) => (
+                            <li key={bullet}>{renderRichText(bullet)}</li>
+                          ))}
+                        </ul>
+                      ) : null}
+
+                      {caseStudy.solutionAfterBulletsParagraphs ? (
+                        <div className="flex flex-col gap-4">
+                          {caseStudy.solutionAfterBulletsParagraphs.map(
+                            (paragraph) => (
+                              <p
+                                key={paragraph}
+                                className="text-base leading-relaxed text-slate"
+                              >
+                                {renderRichText(paragraph)}
+                              </p>
+                            ),
+                          )}
+                        </div>
+                      ) : null}
+
                       {step.subsections
                         ? step.subsections.map((subsection) => (
                             <div
@@ -422,6 +485,40 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                           ))
                         : null}
 
+                      {caseStudy.solutionBullets ? (
+                        <ul className="grid gap-4 sm:grid-cols-2">
+                          {caseStudy.solutionBullets.map((bullet) => (
+                            <li
+                              key={bullet.title}
+                              className="flex gap-3 rounded-2xl border border-violet-light/30 bg-violet-light/10 p-5"
+                            >
+                              <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-violet-deep text-lavender">
+                                <Check aria-hidden className="size-3.5" />
+                              </span>
+                              <div>
+                                <p className="font-heading text-base font-semibold text-ink">
+                                  {renderRichText(bullet.title)}
+                                </p>
+                                <p className="mt-1 text-sm leading-relaxed text-slate">
+                                  {renderRichText(bullet.text)}
+                                </p>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+
+                      {step.closing ? (
+                        <div className="rounded-2xl border border-violet-light/20 bg-violet-deep p-5">
+                          <h3 className="font-heading text-lg font-semibold text-white">
+                            {step.closing.title}
+                          </h3>
+                          <p className="mt-3 text-base leading-relaxed text-lavender">
+                            {renderRichText(step.closing.text)}
+                          </p>
+                        </div>
+                      ) : null}
+
                       {caseStudy.solutionClosingParagraphs ? (
                         <div className="flex flex-col gap-4">
                           {caseStudy.solutionClosingParagraphs.map(
@@ -437,14 +534,11 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                         </div>
                       ) : null}
 
-                      {step.closing ? (
-                        <div className="rounded-2xl border border-violet-light/20 bg-violet-deep p-5">
-                          <h3 className="font-heading text-lg font-semibold text-white">
-                            {step.closing.title}
-                          </h3>
-                          <p className="mt-3 text-base leading-relaxed text-lavender">
-                            {renderRichText(step.closing.text)}
-                          </p>
+                      {afterSolutionVisuals.length ? (
+                        <div className="mt-2 flex flex-col gap-6">
+                          {afterSolutionVisuals.map((visual) => (
+                            <CaseStudyFigure key={visual.key} visual={visual} />
+                          ))}
                         </div>
                       ) : null}
                     </div>
@@ -462,7 +556,13 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                         </p>
                       ) : null}
 
-                      <div className="grid gap-4 sm:grid-cols-2">
+                      <div
+                        className={`grid gap-4 ${
+                          caseStudy.resultStats.length === 1
+                            ? ""
+                            : "sm:grid-cols-2"
+                        }`}
+                      >
                         {caseStudy.resultStats.map((stat) => (
                           <div
                             key={stat.label}
@@ -559,6 +659,14 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
               </div>
             ) : null}
 
+            {afterHowItWorksVisuals.length ? (
+              <div className="flex flex-col gap-6">
+                {afterHowItWorksVisuals.map((visual) => (
+                  <CaseStudyFigure key={visual.key} visual={visual} />
+                ))}
+              </div>
+            ) : null}
+
             {caseStudy.builtFor ? (
               <div className="rounded-2xl border border-violet-light/30 bg-violet-light/10 p-6">
                 <h2 className="font-heading text-2xl font-semibold text-ink">
@@ -616,45 +724,6 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
               </div>
             ) : null}
 
-            <div>
-              <h2 className="font-heading text-2xl font-semibold text-ink">
-                Workflow Screenshot
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate">
-                A visual reference of the workflow nodes and connections used in
-                this case study.
-              </p>
-              <div className="mt-6">
-                {caseStudy.screenshot ? (
-                  <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-violet-light/30 bg-violet-deep">
-                    <Image
-                      src={caseStudy.screenshot}
-                      alt={`Workflow screenshot for ${caseStudy.title}`}
-                      fill
-                      sizes="(min-width: 896px) 896px, 100vw"
-                      className="object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex aspect-[16/10] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-violet-light/50 bg-violet-light/10 p-6 text-center">
-                    <span className="flex size-12 items-center justify-center rounded-full bg-violet-deep text-lavender">
-                      <ImageIcon aria-hidden className="size-5" />
-                    </span>
-                    <p className="font-heading text-lg font-semibold text-ink">
-                      Workflow screenshot coming soon
-                    </p>
-                    <p className="max-w-sm text-sm leading-relaxed text-slate">
-                      A visual walkthrough will be added here.
-                    </p>
-                  </div>
-                )}
-              </div>
-              {caseStudy.screenshotCaption ? (
-                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate">
-                  {renderRichText(caseStudy.screenshotCaption)}
-                </p>
-              ) : null}
-            </div>
           </div>
         </Container>
       </Section>

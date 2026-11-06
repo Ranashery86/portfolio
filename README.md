@@ -85,6 +85,25 @@ src/
     utils.ts                    cn helper built on clsx
 ```
 
+## Case study images
+
+Case study visuals are looked up by file name, so no code changes are needed
+when adding an image. Place files in
+`public/case-studies/<slug>/<key>.<ext>`, where `<ext>` is one of `png`, `jpg`,
+`jpeg`, or `webp` (checked in that order). If a file is missing, the visual is
+hidden automatically.
+
+Keys per case study:
+
+- `client-onboarding-autopilot`: `dashboard`, `workflow`
+- `sales-pipeline-crm`: `dashboard`, `workflow`
+- `email-order-tracking`: `dashboard`, `workflow`
+- `appointment-booking-chatbot`: `chat`, `workflow`
+- `ai-ecommerce-support-chatbot`: `chat`, `workflow`
+
+Recommended sizes: keep workflow images under 500 KB and all other images under
+300 KB. Compress images before adding them.
+
 ## Design tokens
 
 Defined in `src/app/globals.css` via Tailwind v4 `@theme` and used as utilities:

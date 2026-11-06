@@ -296,6 +296,10 @@ h6 {
   }
 }
 
+.image-lightbox::backdrop {
+  background-color: rgb(14 11 29 / 0.9);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wf-svg,
   .wf-svg * {

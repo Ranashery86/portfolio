@@ -1,3 +1,10 @@
+export type CaseStudyVisual = {
+  key: "dashboard" | "chat" | "workflow";
+  placement: "afterSolution" | "afterHowItWorks";
+  alt: string;
+  caption?: string;
+};
+
 export type CaseStudy = {
   slug: string;
   title: string;
@@ -21,6 +28,8 @@ export type CaseStudy = {
   solutionParagraphs?: string[];
   solutionPipeline?: string[];
   solutionAfterPipelineParagraphs?: string[];
+  solutionPlainBullets?: string[];
+  solutionAfterBulletsParagraphs?: string[];
   solutionBullets?: { title: string; text: string }[];
   solutionClosingParagraphs?: string[];
   solutionSubsections?: { title: string; paragraphs: string[] }[];
@@ -42,6 +51,7 @@ export type CaseStudy = {
   screenshotCaption?: string;
   postUrl?: string;
   postLabel?: string;
+  visuals?: CaseStudyVisual[];
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -134,6 +144,23 @@ export const caseStudies: CaseStudy[] = [
       title: "Built for Different Businesses",
       text: "The same onboarding system can be adapted to almost any business that welcomes new clients or customers (e-commerce store, marketing agency, consultant, clinic). The forms, emails, client records, and service details can be customized to match how your business works.",
     },
+    screenshotCaption:
+      "Behind the scenes: the automated workflow that saves the client record, sends both emails, and notifies the team.",
+    visuals: [
+      {
+        key: "dashboard",
+        placement: "afterSolution",
+        alt: "Client onboarding dashboard showing new clients, onboarded clients, emails sent and the automation activity log",
+        caption: "Example dashboard (illustrative mockup)",
+      },
+      {
+        key: "workflow",
+        placement: "afterHowItWorks",
+        alt: "Workflow diagram: client form webhook, client record saved to a spreadsheet, welcome email, service roadmap email, client marked onboarded and team notified",
+        caption:
+          "Behind the scenes: the automated workflow that saves the client record, sends both emails, and notifies the team.",
+      },
+    ],
     cta: {
       heading: "Want to Automate Your Client Onboarding?",
       paragraphs: [
@@ -277,6 +304,21 @@ export const caseStudies: CaseStudy[] = [
       "See how the custom CRM captures enquiries, tracks deals through the sales pipeline, and handles follow-ups automatically.",
     screenshotCaption:
       "Behind the scenes: the automated process that manages new enquiries, prevents duplicates, sends follow-ups, and keeps lead records updated.",
+    visuals: [
+      {
+        key: "dashboard",
+        placement: "afterSolution",
+        alt: "Sales pipeline CRM dashboard with the stages New, Contacted, Quote Sent, Won and Lost",
+        caption: "Example dashboard (illustrative mockup)",
+      },
+      {
+        key: "workflow",
+        placement: "afterHowItWorks",
+        alt: "Workflow diagram for capturing enquiries, preventing duplicates, sending follow-ups and updating lead records",
+        caption:
+          "Behind the scenes: the automated process that manages new enquiries, prevents duplicates, sends follow-ups, and keeps lead records updated.",
+      },
+    ],
     cta: {
       heading:
         "Your sales process should help you win customers, not create more admin work.",
@@ -288,21 +330,150 @@ export const caseStudies: CaseStudy[] = [
     },
   },
   {
-    slug: "agency-crm",
-    title: "Agency CRM: 15 Hours/Week Saved",
-    industry: "Marketing Agency",
-    metric: "15 hrs/week",
-    metricLabel: "saved per week",
+    slug: "email-order-tracking",
+    title:
+      "Stop Copying Order Details by Hand. Keep Every Order Updated Automatically.",
+    cardTitle: "Email-to-Order Tracking Automation",
+    subtitle: "Email and Document Order Tracking Automation",
+    industry: "Operations and Logistics",
     shortDescription:
-      "Case study showing a custom CRM that removes repetitive agency admin.",
-    problem:
-      "A marketing agency tracks clients across spreadsheets, inboxes, and separate project tools. Account managers copy the same updates into several places, which creates delays and makes reporting inconsistent.",
-    solution:
-      "A custom CRM centralises client intake, project status, and approvals. n8n automations keep the CRM, project board, and reporting dashboard in sync without manual copy-paste.",
-    result:
-      "The account team saves 15 hours per week. Fewer status meetings are needed because client updates are generated and shared automatically.",
+      "A system that reads incoming emails and PDFs, extracts key details, and updates the correct order records automatically.",
+    metric: "3 hrs/week",
+    metricLabel: "estimated time saved",
     loomUrl: "",
     screenshot: "",
+    postUrl: "",
+    postLabel: "",
+    problem:
+      "Important order details get buried in emails and PDF attachments. Staff spend hours copying information by hand.",
+    solution:
+      "I built a system that reads incoming emails and documents, extracts key details, and updates the correct order records automatically.",
+    result:
+      "Less manual work, fewer typing mistakes, and a custom dashboard that keeps order information in one place.",
+    problemLead:
+      "Too many emails. Too much copying. Too many chances for mistakes.",
+    problemParagraphs: [
+      "Many businesses receive important order information through emails and attached documents.",
+      "Every new invoice, purchase order, shipping document, or payment update needs someone to open it, find the right reference numbers and dates, and copy them into an order record.",
+      "This creates several problems:",
+    ],
+    problemBullets: [
+      "Staff waste valuable time reading emails and copying details.",
+      "Typing mistakes can lead to incorrect order information.",
+      "Important updates get buried in a busy inbox.",
+      "Order records fall behind when staff are busy.",
+      "Finding the latest information means searching through old emails and PDFs.",
+    ],
+    problemClosingParagraphs: [
+      "The more orders a business handles, the harder it becomes to keep everything updated manually.",
+    ],
+    solutionLead:
+      "A system that reads order emails and updates records automatically.",
+    solutionParagraphs: [
+      "I built an email and document tracking system that handles the repetitive work of reading incoming emails, finding important details, and updating order records.",
+      "The system checks the business inbox for new emails within minutes.",
+      "It reads email messages and attached PDFs, including scanned documents using text recognition (OCR).",
+      "It identifies important information such as:",
+    ],
+    solutionPlainBullets: [
+      "Order, invoice, shipment, and payment reference numbers.",
+      "Important dates, including departure and arrival dates.",
+      "Short status updates from email messages.",
+    ],
+    solutionAfterBulletsParagraphs: [
+      "The system uses simple rules first to find the information. AI only helps when those rules cannot find enough details. It never guesses missing information.",
+      "Unrelated emails are ignored.",
+      "Once the information is found, the system matches it to the correct order in a database (for example Supabase, Airtable, or any CRM), updates the record, and logs what changed and which email provided the information.",
+      "I also built a custom web dashboard where the team can see all orders and their latest recorded details in one place.",
+    ],
+    solutionClosingParagraphs: [
+      "**The goal is simple:** Stop wasting time copying information that can be handled automatically.",
+    ],
+    resultLead: "Less manual work. More reliable order tracking.",
+    resultIntro:
+      "With this system, a business can reduce the time spent opening documents and copying order information.",
+    resultStats: [
+      {
+        value: "Up to 3 hours per week",
+        label: "Estimated time savings",
+        assumption:
+          "Assumption: 40 relevant order emails per week, with 5 minutes of manual copying per email. Actual savings depend on email volume and document quality.",
+      },
+    ],
+    resultBenefitsTitle: "The main benefits include:",
+    resultBenefits: [
+      {
+        title: "Time saved",
+        text: "Staff spend less time copying reference numbers and dates.",
+      },
+      {
+        title: "Lower admin costs",
+        text: "Less repetitive data entry means more staff time available for other work.",
+      },
+      {
+        title: "Fewer mistakes",
+        text: "Automatic extraction reduces the risk of manual typing errors.",
+      },
+      {
+        title: "Fewer missed updates",
+        text: "Relevant emails are checked and processed within minutes.",
+      },
+      {
+        title: "Better visibility",
+        text: "Teams can see the latest recorded order details on one dashboard.",
+      },
+      {
+        title: "Clearer records",
+        text: "Each automatic update is logged with its source email.",
+      },
+    ],
+    resultOutro:
+      "These are expected benefits of the system, not measured results from a real client.",
+    howItWorksTitle: "How It Works",
+    howItWorks: [
+      {
+        title: "Step 1: New emails are checked automatically",
+        text: "The system monitors the business inbox (for example Gmail or any email service) for incoming messages. It ignores unrelated emails and reads relevant messages and PDF attachments. Scanned PDFs are read using text recognition (OCR).",
+      },
+      {
+        title: "Step 2: Important details are collected",
+        text: "The system identifies order numbers, invoice references, shipping details, important dates, and status notes. It uses simple rules first. AI helps only when information is missing from the rule-based results, without guessing anything that is not clearly written.",
+      },
+      {
+        title: "Step 3: Order records are updated",
+        text: "The extracted details are matched to the correct order. The database is updated, and every change is logged with its source email. The custom dashboard shows all orders and their latest recorded information in one place.",
+      },
+    ],
+    builtFor: {
+      title: "Works for Any Business",
+      text: "This system can be adapted to different industries, document types, and order-tracking processes (import and export companies, freight forwarders, wholesale suppliers, and accounts payable teams). Whether your business handles invoices, shipping paperwork, purchase orders, or payment references, the same approach can reduce manual entry and keep records organized.",
+    },
+    videoCaption:
+      "See how the system reads incoming emails and PDFs, extracts important order details, updates records automatically, and displays the latest information on a custom dashboard.",
+    screenshotCaption:
+      "A look at the automated process that turns incoming emails and business documents into updated order records.",
+    visuals: [
+      {
+        key: "dashboard",
+        placement: "afterSolution",
+        alt: "Order tracking dashboard listing orders with their latest recorded details",
+        caption: "Example dashboard (illustrative mockup)",
+      },
+      {
+        key: "workflow",
+        placement: "afterHowItWorks",
+        alt: "Workflow diagram that reads emails and PDFs, extracts order details and updates order records",
+        caption:
+          "A look at the automated process that turns incoming emails and business documents into updated order records.",
+      },
+    ],
+    cta: {
+      heading: "Want to Stop Copying Order Details by Hand?",
+      paragraphs: [
+        "Still spending hours copying order details from emails and documents? Let's discuss how a custom tracking system could simplify your business operations.",
+      ],
+      buttonLabel: "Book a Free Discovery Call",
+    },
   },
   {
     slug: "appointment-booking-chatbot",
@@ -444,6 +615,21 @@ export const caseStudies: CaseStudy[] = [
       "Watch the appointment booking chatbot in action, from answering service questions to booking and managing appointments.",
     screenshotCaption:
       "A behind-the-scenes look at how appointment requests, availability checks, booking records, and confirmations are handled automatically.",
+    visuals: [
+      {
+        key: "chat",
+        placement: "afterSolution",
+        alt: "Appointment booking chatbot conversation checking availability and confirming a booking",
+        caption: "Example conversation (illustrative)",
+      },
+      {
+        key: "workflow",
+        placement: "afterHowItWorks",
+        alt: "Workflow diagram for the appointment booking chatbot: availability check, booking, calendar update and confirmation email",
+        caption:
+          "A behind-the-scenes look at how appointment requests, availability checks, booking records, and confirmations are handled automatically.",
+      },
+    ],
     cta: {
       heading: "Want a Booking Assistant Like This for Your Business?",
       paragraphs: [
@@ -589,6 +775,21 @@ export const caseStudies: CaseStudy[] = [
       "Watch this walkthrough to see how the AI chatbot tracks orders, creates support tickets, and recommends products through a simple customer conversation.",
     screenshotCaption:
       "Behind the scenes: the automated process that connects customer messages with order information, support tickets, product recommendations, and team notifications.",
+    visuals: [
+      {
+        key: "chat",
+        placement: "afterSolution",
+        alt: "E-commerce support chatbot conversation with order tracking, a support ticket and product recommendations",
+        caption: "Example conversation (illustrative)",
+      },
+      {
+        key: "workflow",
+        placement: "afterHowItWorks",
+        alt: "Workflow diagram for the e-commerce chatbot: order lookup, support ticket creation and product recommendations",
+        caption:
+          "Behind the scenes: the automated process that connects customer messages with order information, support tickets, product recommendations, and team notifications.",
+      },
+    ],
     cta: {
       heading: "Want a Chatbot Like This for Your Store?",
       paragraphs: [
