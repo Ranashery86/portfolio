@@ -37,7 +37,10 @@ The contact form posts to `/api/contact`, which validates the input and forwards
 it to `N8N_CONTACT_WEBHOOK_URL`. The voice widget posts recorded audio to
 `/api/voice`, which validates the upload and forwards it to
 `N8N_VOICE_WEBHOOK_URL` with the configured `VOICE_WEBHOOK_HEADER_NAME` header
-(default `portfolio-voice-agent`).
+(default `portfolio-voice-agent`). The widget's chat mode posts typed messages
+to `/api/chat`, which validates the text and forwards it to the same voice
+webhook as a `{ sessionId, text, mode: "text" }` JSON request, so chat and voice
+share the same conversation session.
 
 The n8n webhook variables and the voice secret are intentionally server-only (no
 `NEXT_PUBLIC_` prefix). Do not put webhook URLs or secrets in client code.
@@ -53,6 +56,15 @@ The n8n webhook variables and the voice secret are intentionally server-only (no
   `sessionId`, validates the file size and session ID, rate limits per IP, and
   forwards the audio to n8n with the configured `VOICE_WEBHOOK_HEADER_NAME`
   header (default `portfolio-voice-agent`).
+- `/api/chat` accepts `{ text, sessionId }`, validates the trimmed text length
+  and session ID, rate limits per IP, and forwards `{ sessionId, text, mode:
+  "text" }` to the same n8n voice webhook with the same secret header. It
+  returns `{ reply, lang }` and never exposes the webhook URL to the browser.
+
+The assistant widget can switch between Chat and Talk modes at any time. Both
+modes use the same `sessionId`, so the n8n workflow keeps the conversation
+context when a visitor changes mode. Chat mode never requests microphone
+access and does not play audio.
 
 Both n8n workflows must be published for the live integrations to work. When
 deploying to Vercel, add the same three n8n variables in the project settings.
@@ -68,6 +80,7 @@ src/
     case-studies/[slug]/        Dynamic case study page (static params + metadata)
     api/contact/route.ts        POST contact form proxy to the n8n webhook
     api/voice/route.ts          POST multipart audio proxy to the n8n voice agent
+    api/chat/route.ts           POST JSON text proxy to the n8n voice agent
     sitemap.ts                  Sitemap generated from case study data
     robots.ts                   Robots rules and sitemap pointer
     not-found.tsx               404 page
