@@ -117,20 +117,28 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
     notFound();
   }
 
-  const resolvedVisuals: ResolvedCaseStudyVisual[] = [];
+  const resolvedVisuals = (
+    await Promise.all(
+      (caseStudy.visuals ?? []).map(async (visual) => {
+        const image = await findCaseStudyImage(caseStudy.slug, visual.key);
 
-  for (const visual of caseStudy.visuals ?? []) {
-    const image = findCaseStudyImage(caseStudy.slug, visual.key);
+        if (image) {
+          return { ...visual, image };
+        }
 
-    if (image) {
-      resolvedVisuals.push({ ...visual, image });
-    } else if (visual.key === "workflow" && caseStudy.screenshot) {
-      resolvedVisuals.push({
-        ...visual,
-        image: { src: caseStudy.screenshot, width: 1600, height: 900 },
-      });
-    }
-  }
+        if (visual.key === "workflow" && caseStudy.screenshot) {
+          return {
+            ...visual,
+            image: { src: caseStudy.screenshot, width: 1600, height: 900 },
+          };
+        }
+
+        return null;
+      }),
+    )
+  ).filter(
+    (visual): visual is ResolvedCaseStudyVisual => visual !== null,
+  );
 
   const afterSolutionVisuals = resolvedVisuals.filter(
     (visual) => visual.placement === "afterSolution",

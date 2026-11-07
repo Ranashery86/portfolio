@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -160,10 +161,13 @@ function readImageDimensions(filePath: string): ImageDimensions {
   }
 }
 
-export function findCaseStudyImage(
+export async function findCaseStudyImage(
   slug: string,
   key: string,
-): CaseStudyImage | null {
+): Promise<CaseStudyImage | null> {
+  "use cache";
+  cacheLife("days");
+
   if (!isImageKey(key) || !/^[a-z0-9-]+$/.test(slug)) {
     return null;
   }
