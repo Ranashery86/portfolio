@@ -11,7 +11,7 @@ export const siteConfig = {
   aboutText: [
     "I'm an AI Automation Engineer who helps businesses stop wasting time on repetitive work. I build custom CRMs and connect every step of your process with n8n automation, so leads, follow-ups, invoices and support run on their own.",
   ],
-  showTestimonials: true,
+  showTestimonials: false,
   social: {
     linkedin: "",
     upwork: "",

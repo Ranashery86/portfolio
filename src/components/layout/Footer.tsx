@@ -12,7 +12,9 @@ const footerLinks = [
   { label: "Testimonials", hash: "#testimonials" },
   { label: "FAQ", hash: "#faq" },
   { label: "Contact", hash: "#contact" },
-];
+].filter(
+  (link) => siteConfig.showTestimonials || link.hash !== "#testimonials",
+);
 
 async function getCopyrightYear() {
   "use cache";

@@ -6,6 +6,7 @@ import {
   Hero,
   Testimonials,
 } from "@/components/sections";
+import { siteConfig } from "@/data/site";
 
 export default function HomePage() {
   return (
@@ -13,7 +14,7 @@ export default function HomePage() {
       <Hero />
       <About />
       <CaseStudies />
-      <Testimonials />
+      {siteConfig.showTestimonials ? <Testimonials /> : null}
       <FAQ />
       <Contact />
     </>

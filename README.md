@@ -98,6 +98,8 @@ src/
     utils.ts                    cn helper built on clsx
 ```
 
+Testimonials are hidden by `showTestimonials` in `src/data/site.ts`; to turn them back on, set it to `true`, replace the placeholder items in `src/data/testimonials.ts` with real ones, and set `isPlaceholder` to `false`.
+
 ## Case study images
 
 Case study visuals are looked up by file name, so no code changes are needed

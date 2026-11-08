@@ -24,17 +24,17 @@ const faqJsonLd = {
 
 export function FAQ() {
   return (
-    <Section id="faq" variant="light">
+    <Section id="faq" variant="dark" className="bg-glow">
       <JsonLd data={faqJsonLd} />
       <Container>
         <Reveal>
-          <p className="text-xs font-semibold tracking-[0.2em] text-purple uppercase">
+          <p className="text-xs font-semibold tracking-[0.2em] text-violet-light uppercase">
             FAQ
           </p>
-          <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+          <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-white sm:text-4xl">
             Questions, answered
           </h2>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate">
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-lavender">
             A few things people usually ask before we start working together.
           </p>
         </Reveal>
@@ -42,7 +42,7 @@ export function FAQ() {
         <div className="mt-10 flex flex-col gap-3">
           {faqs.map((faq, index) => (
             <Reveal key={faq.question} delay={index * 0.04}>
-              <details className="group rounded-2xl border border-violet-light/30 bg-violet-deep text-lavender transition-colors hover:border-violet-light/60 open:border-violet-light/80">
+              <details className="group rounded-2xl border border-violet-light/25 bg-violet-deep/50 text-lavender backdrop-blur-xl transition-colors hover:border-violet-light/50 open:border-violet-light/80">
                 <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 focus-visible:ring-2 focus-visible:ring-violet-light focus-visible:ring-inset focus-visible:outline-none sm:px-6 [&::-webkit-details-marker]:hidden">
                   <span className="font-heading text-base font-semibold text-white sm:text-lg">
                     {faq.question}
@@ -65,10 +65,10 @@ export function FAQ() {
         <Reveal delay={0.08}>
           <div className="mt-10 flex flex-col gap-5 rounded-2xl border border-violet-light/30 bg-violet-light/10 p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="font-heading text-xl font-semibold text-ink">
+              <p className="font-heading text-xl font-semibold text-white">
                 Still have a question?
               </p>
-              <p className="mt-1 text-sm text-slate">
+              <p className="mt-1 text-sm text-lavender">
                 Send me a message and I&apos;ll reply by email.
               </p>
             </div>
@@ -82,7 +82,7 @@ export function FAQ() {
               </Button>
               <Link
                 href="#contact"
-                className="inline-flex min-h-11 items-center text-sm font-semibold text-purple underline-offset-4 transition-colors hover:text-ink hover:underline focus-visible:ring-2 focus-visible:ring-purple focus-visible:ring-offset-2 focus-visible:ring-offset-lavender focus-visible:outline-none"
+                className="inline-flex min-h-11 items-center text-sm font-semibold text-violet-light underline-offset-4 transition-colors hover:text-white hover:underline focus-visible:ring-2 focus-visible:ring-violet-light focus-visible:ring-offset-2 focus-visible:ring-offset-ink focus-visible:outline-none"
               >
                 Send a message
               </Link>

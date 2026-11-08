@@ -10,7 +10,7 @@ import { siteConfig } from "@/data/site";
 
 export function Contact() {
   return (
-    <Section id="contact">
+    <Section id="contact" className="border-t border-violet-light/15">
       <Container>
         <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-12">
           <div>

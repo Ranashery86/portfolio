@@ -16,7 +16,9 @@ const navLinks = [
   { label: "Testimonials", hash: "#testimonials" },
   { label: "FAQ", hash: "#faq" },
   { label: "Contact", hash: "#contact" },
-];
+].filter(
+  (link) => siteConfig.showTestimonials || link.hash !== "#testimonials",
+);
 
 export function Header() {
   const pathname = usePathname();
