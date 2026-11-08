@@ -136,9 +136,14 @@ export async function POST(request: Request) {
     });
 
     if (!response.ok) {
-      console.error(
-        `[chat] n8n chat webhook failed with status ${response.status}.`,
-      );
+      console.error("[chat] n8n non-2xx", {
+        status: response.status,
+        contentType: response.headers.get("content-type"),
+        bodyStart: (await response.text()).slice(0, 200),
+        headerNameUsed: voiceWebhookHeaderName,
+        secretLength: voiceWebhookSecret.length,
+        requestContentType: request.headers.get("content-type"),
+      });
 
       return NextResponse.json({ error: "upstream" }, { status: 502 });
     }

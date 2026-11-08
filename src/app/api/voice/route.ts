@@ -105,6 +105,8 @@ export async function POST(request: Request) {
 
   const voiceWebhookUrl = process.env.N8N_VOICE_WEBHOOK_URL?.trim();
   const voiceWebhookSecret = process.env.VOICE_WEBHOOK_SECRET?.trim();
+  const voiceWebhookHeaderName =
+    process.env.VOICE_WEBHOOK_HEADER_NAME?.trim() || "portfolio-voice-agent";
 
   if (!voiceWebhookUrl || !voiceWebhookSecret) {
     console.error(
@@ -124,16 +126,22 @@ export async function POST(request: Request) {
   try {
     const response = await fetch(voiceWebhookUrl, {
       method: "POST",
-      headers: { "x-voice-secret": voiceWebhookSecret },
+      headers: { [voiceWebhookHeaderName]: voiceWebhookSecret },
       body: outgoing,
       signal: controller.signal,
       cache: "no-store",
     });
 
     if (!response.ok) {
-      console.error(
-        `[voice] n8n voice webhook failed with status ${response.status}.`,
-      );
+      console.error("[voice] n8n non-2xx", {
+        status: response.status,
+        contentType: response.headers.get("content-type"),
+        bodyStart: (await response.text()).slice(0, 200),
+        headerNameUsed: voiceWebhookHeaderName,
+        secretLength: voiceWebhookSecret.length,
+        requestContentType: request.headers.get("content-type"),
+        audioBytes: audio.size,
+      });
 
       return NextResponse.json({ error: "upstream" }, { status: 502 });
     }
