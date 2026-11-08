@@ -32,7 +32,7 @@ export function FAQ() {
             FAQ
           </p>
           <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Questions, answered
+            Questions, Answered
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-lavender">
             A few things people usually ask before we start working together.

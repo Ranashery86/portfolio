@@ -9,8 +9,6 @@ export type CaseStudy = {
   slug: string;
   title: string;
   industry: string;
-  metric: string;
-  metricLabel: string;
   headline: string;
   headlineLabel: string;
   shortDescription: string;
@@ -38,8 +36,6 @@ export type CaseStudy = {
   resultLead?: string;
   solutionClosing?: { title: string; text: string };
   resultIntro?: string;
-  resultStats?: { value: string; label: string; assumption: string }[];
-  resultNote?: string;
   resultBenefitsTitle?: string;
   resultBenefits?: { title: string; text: string }[];
   resultOutro?: string;
@@ -69,11 +65,9 @@ export const caseStudies: CaseStudy[] = [
     solution:
       "A client onboarding system that saves each new client's details, sends a welcome email and a service roadmap, and notifies the team automatically from the first form submission.",
     result:
-      "Onboarding is designed to be faster, more consistent, and easier to manage, with an estimated 10 hours per month saved.",
-    metric: "10 hrs/month",
-    metricLabel: "estimated time saved",
-    headline: "Zero manual onboarding",
-    headlineLabel: "From form to welcome email",
+      "Onboarding is designed to be faster, more consistent, and easier to manage.",
+    headline: "Zero Manual Onboarding",
+    headlineLabel: "From Form to Welcome Email",
     loomUrl: "",
     screenshot: "",
     problemParagraphs: [
@@ -94,24 +88,8 @@ export const caseStudies: CaseStudy[] = [
     ],
     resultIntro:
       "The system is designed to make onboarding faster, more consistent, and easier to manage.",
-    resultStats: [
-      {
-        value: "Up to 10 hours per month",
-        label: "Estimated time saved",
-        assumption:
-          "Assumption: 20 new clients per month, with 30 minutes of manual onboarding work per client.",
-      },
-      {
-        value: "Up to $100 per month",
-        label: "Estimated labor cost savings",
-        assumption:
-          "Assumption: 10 hours of manual work avoided at an assumed labor cost of $10 per hour.",
-      },
-    ],
-    resultNote:
-      "These are illustrative estimates, not results measured from a real client.",
     resultBenefitsTitle:
-      "Beyond the estimated savings, the system is designed to provide three practical benefits:",
+      "The system is also designed to provide three practical benefits:",
     resultBenefits: [
       {
         title: "Fewer missed steps",
@@ -183,10 +161,8 @@ export const caseStudies: CaseStudy[] = [
     industry: "Sales and Lead Management",
     shortDescription:
       "A custom sales CRM that captures enquiries, tracks deals on a visual pipeline, and sends follow-ups automatically.",
-    metric: "8-10 hrs/month",
-    metricLabel: "estimated time saved",
-    headline: "No lead left behind",
-    headlineLabel: "Pipeline and follow-ups in one place",
+    headline: "No Lead Left Behind",
+    headlineLabel: "Pipeline and Follow-Ups in One Place",
     loomUrl: "",
     screenshot: "",
     postUrl: "",
@@ -230,7 +206,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     solutionSubsections: [
       {
-        title: "Follow-ups happen automatically.",
+        title: "Follow-Ups Happen Automatically.",
         paragraphs: [
           "Active leads can receive up to three short, polite follow-up emails around days 1, 3, and 7, each with a different message.",
           "Once a deal is marked Won or Lost, the follow-ups stop.",
@@ -244,22 +220,6 @@ export const caseStudies: CaseStudy[] = [
     resultLead: "Less admin work. Better organization. Fewer missed follow-ups.",
     resultIntro:
       "This case study shows how a business could benefit from managing its sales process in one connected system.",
-    resultStats: [
-      {
-        value: "8-10 hours per month",
-        label: "Estimated time saved",
-        assumption:
-          "Assumption: 50 new enquiries per month, with 10-12 minutes of manual tracking and follow-up work per lead.",
-      },
-      {
-        value: "$80-$100 per month",
-        label: "Estimated admin cost savings",
-        assumption:
-          "Assumption: 8-10 hours saved monthly at an assumed administrative labor cost of $10 per hour.",
-      },
-    ],
-    resultNote:
-      "These are illustrative estimates, not measured results from a real client. Actual savings depend on enquiry volume and the business's existing process.",
     resultBenefitsTitle: "Other practical benefits include:",
     resultBenefits: [
       {
@@ -327,7 +287,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     cta: {
       heading:
-        "Your sales process should help you win customers, not create more admin work.",
+        "Your Sales Process Should Help You Win Customers, Not Create More Admin Work.",
       paragraphs: [
         "I build custom CRMs with complete automation, tailored to how your business operates.",
         "Let's discuss how we can simplify your sales process, reduce manual work, and keep your leads organized.",
@@ -344,10 +304,8 @@ export const caseStudies: CaseStudy[] = [
     industry: "Operations and Logistics",
     shortDescription:
       "A system that reads incoming emails and PDFs, extracts key details, and updates the correct order records automatically.",
-    metric: "3 hrs/week",
-    metricLabel: "estimated time saved",
-    headline: "No more copy-paste",
-    headlineLabel: "Emails and PDFs into order records",
+    headline: "No More Copy-Paste",
+    headlineLabel: "Emails and PDFs Into Order Records",
     loomUrl: "",
     screenshot: "",
     postUrl: "",
@@ -400,14 +358,6 @@ export const caseStudies: CaseStudy[] = [
     resultLead: "Less manual work. More reliable order tracking.",
     resultIntro:
       "With this system, a business can reduce the time spent opening documents and copying order information.",
-    resultStats: [
-      {
-        value: "Up to 3 hours per week",
-        label: "Estimated time savings",
-        assumption:
-          "Assumption: 40 relevant order emails per week, with 5 minutes of manual copying per email. Actual savings depend on email volume and document quality.",
-      },
-    ],
     resultBenefitsTitle: "The main benefits include:",
     resultBenefits: [
       {
@@ -440,15 +390,15 @@ export const caseStudies: CaseStudy[] = [
     howItWorksTitle: "How It Works",
     howItWorks: [
       {
-        title: "Step 1: New emails are checked automatically",
+        title: "Step 1: New Emails Are Checked Automatically",
         text: "The system monitors the business inbox (for example Gmail or any email service) for incoming messages. It ignores unrelated emails and reads relevant messages and PDF attachments. Scanned PDFs are read using text recognition (OCR).",
       },
       {
-        title: "Step 2: Important details are collected",
+        title: "Step 2: Important Details Are Collected",
         text: "The system identifies order numbers, invoice references, shipping details, important dates, and status notes. It uses simple rules first. AI helps only when information is missing from the rule-based results, without guessing anything that is not clearly written.",
       },
       {
-        title: "Step 3: Order records are updated",
+        title: "Step 3: Order Records Are Updated",
         text: "The extracted details are matched to the correct order. The database is updated, and every change is logged with its source email. The custom dashboard shows all orders and their latest recorded information in one place.",
       },
     ],
@@ -497,10 +447,8 @@ export const caseStudies: CaseStudy[] = [
       "I built an AI chatbot that answers service questions, checks real availability, and handles bookings, rescheduling, and cancellations.",
     result:
       "Less manual work, fewer scheduling mistakes, and a smoother booking experience for customers.",
-    metric: "2 hrs/week",
-    metricLabel: "estimated time saved",
     headline: "Bookings, 24/7",
-    headlineLabel: "Answers, scheduling and confirmations",
+    headlineLabel: "Answers, Scheduling and Confirmations",
     loomUrl: "",
     screenshot: "",
     postUrl: "",
@@ -569,21 +517,6 @@ export const caseStudies: CaseStudy[] = [
     ],
     resultIntro:
       "This case study shows how an appointment-based business can reduce manual scheduling work while giving customers a faster way to book.",
-    resultStats: [
-      {
-        value: "2 hours per week",
-        label: "Estimated time savings",
-        assumption:
-          "Less time spent answering routine booking messages.",
-      },
-      {
-        value: "$30 per week",
-        label: "Estimated staff cost savings",
-        assumption: "Based on an example staff cost of $15 per hour.",
-      },
-    ],
-    resultNote:
-      "Estimate assumptions: 40 booking messages per week, 5 minutes of manual work per message, and 60% of that work automated. These are illustrative estimates, not measured client results. Actual savings depend on booking volume and business operations.",
     resultBenefits: [
       {
         title: "Less time spent on routine messages",
@@ -664,10 +597,8 @@ export const caseStudies: CaseStudy[] = [
       "I built an AI chatbot that tracks orders, handles support tickets, and recommends products directly on a store's website.",
     result:
       "Customers get faster answers, support requests stay organized, and store owners spend less time on repetitive questions.",
-    metric: "5 hrs/week",
-    metricLabel: "estimated time saved",
-    headline: "Instant answers, fewer tickets",
-    headlineLabel: "Orders, support and recommendations",
+    headline: "Instant Answers, Fewer Tickets",
+    headlineLabel: "Orders, Support and Recommendations",
     loomUrl: "",
     screenshot: "",
     postUrl: "",
@@ -726,20 +657,6 @@ export const caseStudies: CaseStudy[] = [
     },
     resultIntro:
       "This case study shows how a store can handle common customer questions without requiring staff to respond to every message manually.",
-    resultStats: [
-      {
-        value: "5 hrs/week",
-        label: "Estimated time saved",
-        assumption: "Less time spent on routine customer questions.",
-      },
-      {
-        value: "20 hrs",
-        label: "Estimated monthly time saved",
-        assumption: "More time available for running the business.",
-      },
-    ],
-    resultNote:
-      "Estimated, not measured results. Assumes 200 customer messages per week, 3 minutes of manual work per message, and 50% handled automatically. Monthly estimate uses four weeks.",
     resultBenefitsTitle: "Other practical benefits:",
     resultBenefits: [
       {
@@ -767,15 +684,15 @@ export const caseStudies: CaseStudy[] = [
       "These are expected benefits of the system, not results measured from a live client store.",
     howItWorks: [
       {
-        title: "Customer sends a message",
+        title: "Customer Sends a Message",
         text: "A shopper opens the chat window on the website and asks about an order, reports a problem, or requests product suggestions.",
       },
       {
-        title: "The chatbot finds the right information",
+        title: "The Chatbot Finds the Right Information",
         text: "It understands the request, checks the relevant store records, or collects the details needed to create a support ticket.",
       },
       {
-        title: "The customer gets a helpful response",
+        title: "The Customer Gets a Helpful Response",
         text: "The chatbot shares order updates, provides a support ticket number, or recommends suitable products. If a support ticket is created, the team also receives an email alert.",
       },
     ],

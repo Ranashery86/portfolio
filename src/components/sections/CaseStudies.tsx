@@ -18,7 +18,7 @@ export function CaseStudies() {
               Case Studies
             </p>
             <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-              Automation in action
+              Automation in Action
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate">
               Five example projects showing how custom CRMs and n8n automation

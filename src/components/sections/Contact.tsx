@@ -19,7 +19,7 @@ export function Contact() {
                 Contact
               </p>
               <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Let&apos;s automate your business
+                Let&apos;s Automate Your Business
               </h2>
               <p className="mt-4 max-w-xl text-base leading-relaxed text-lavender">
                 Book a free call, or send me a message and I&apos;ll reply by
@@ -70,7 +70,7 @@ export function Contact() {
           <Reveal delay={0.16}>
             <div className="rounded-2xl border border-violet-light/25 bg-violet-deep/40 p-6 shadow-[0_18px_50px_-12px_rgba(14,11,29,0.75)] backdrop-blur-xl sm:p-8">
               <h3 className="font-heading text-xl font-semibold text-white">
-                Send a message
+                Send a Message
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-lavender">
                 Share a few details and I&apos;ll get back to you by email.

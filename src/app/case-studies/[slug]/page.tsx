@@ -550,7 +550,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                         </div>
                       ) : null}
                     </div>
-                  ) : step.title === "The Result" && caseStudy.resultStats ? (
+                  ) : step.title === "The Result" ? (
                     <div className="mt-3 flex max-w-3xl flex-col gap-6">
                       {caseStudy.resultLead ? (
                         <p className="font-heading text-lg font-semibold leading-relaxed text-ink sm:text-xl">
@@ -561,41 +561,6 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                       {caseStudy.resultIntro ? (
                         <p className="text-base leading-relaxed text-slate">
                           {renderRichText(caseStudy.resultIntro)}
-                        </p>
-                      ) : null}
-
-                      <p className="text-xs font-semibold tracking-[0.14em] text-purple uppercase">
-                        Example scenario
-                      </p>
-
-                      <div
-                        className={`grid gap-4 ${
-                          caseStudy.resultStats.length === 1
-                            ? ""
-                            : "sm:grid-cols-2"
-                        }`}
-                      >
-                        {caseStudy.resultStats.map((stat) => (
-                          <div
-                            key={stat.label}
-                            className="rounded-2xl border border-violet-light/20 bg-violet-deep p-5"
-                          >
-                            <p className="font-heading text-2xl font-semibold text-white">
-                              {renderRichText(stat.value)}
-                            </p>
-                            <p className="mt-1 text-sm font-semibold text-lavender">
-                              {renderRichText(stat.label)}
-                            </p>
-                            <p className="mt-3 text-xs leading-relaxed text-lavender/80 italic">
-                              {renderRichText(stat.assumption)}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-
-                      {caseStudy.resultNote ? (
-                        <p className="text-xs leading-relaxed text-slate/80 italic">
-                          {renderRichText(caseStudy.resultNote)}
                         </p>
                       ) : null}
 
@@ -744,7 +709,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         <Container className="py-16 sm:py-20">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              {caseStudy.cta?.heading ?? "Need something like this?"}
+              {caseStudy.cta?.heading ?? "Need Something Like This?"}
             </h2>
             {caseStudy.cta ? (
               caseStudy.cta.paragraphs.map((paragraph) => (
