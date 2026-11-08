@@ -47,6 +47,14 @@ The n8n webhook variables and the voice secret are intentionally server-only (no
 
 `.env.local` is ignored by git. `.env.example` is committed.
 
+## Analytics and Search Console
+
+Vercel Analytics and Speed Insights are enabled in `src/app/layout.tsx`. After
+deploying, open the project in the Vercel dashboard and use the **Analytics** and
+**Speed Insights** tabs to view traffic and Web Vitals data. To verify the site in
+Google Search Console, add `GOOGLE_SITE_VERIFICATION` in the Vercel project's
+Environment Variables (followed by a redeploy).
+
 ## Contact and voice integrations
 
 - `/api/contact` accepts `{ name, email, message, website }`, validates the

@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 
@@ -41,6 +43,8 @@ const socialImage = photoUrl
   ? { url: photoUrl, alt: "Shaheer Mudassar, AI Automation Engineer" }
   : null;
 
+const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION?.trim();
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -55,6 +59,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  ...(googleSiteVerification
+    ? { verification: { google: googleSiteVerification } }
+    : {}),
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -87,6 +94,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main className="flex-1">{children}</main>
         <Footer />
         <VoiceWidgetLoader />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
