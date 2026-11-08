@@ -42,20 +42,12 @@ export function CaseStudies() {
                     </span>
                   </div>
 
-                  <div className="mt-6">
-                    <p
-                      className={`font-heading font-semibold whitespace-nowrap text-white ${
-                        caseStudy.metric.length > 12
-                          ? "text-2xl sm:text-3xl"
-                          : caseStudy.metric.length > 8
-                            ? "text-3xl"
-                            : "text-4xl"
-                      }`}
-                    >
-                      {caseStudy.metric}
+                  <div className="mt-6 min-h-[5.5rem] sm:min-h-[6rem]">
+                    <p className="font-heading text-2xl font-semibold text-white sm:text-3xl">
+                      {caseStudy.headline}
                     </p>
-                    <p className="mt-1 text-xs tracking-[0.12em] text-lavender/70 uppercase">
-                      {caseStudy.metricLabel}
+                    <p className="mt-2 text-xs tracking-[0.12em] text-lavender/70 uppercase">
+                      {caseStudy.headlineLabel}
                     </p>
                   </div>
 
@@ -84,10 +76,6 @@ export function CaseStudies() {
             </li>
           ))}
         </ul>
-
-        <p className="mt-6 text-center text-sm text-slate">
-          Figures shown are illustrative examples.
-        </p>
 
         <div className="mt-12 flex justify-center">
           <Button

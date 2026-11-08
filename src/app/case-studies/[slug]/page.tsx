@@ -277,12 +277,12 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
               </p>
             </div>
 
-            <div className="shrink-0 rounded-2xl border border-violet-light/25 bg-violet-deep/50 px-6 py-5 backdrop-blur">
-              <p className="font-heading text-4xl font-semibold whitespace-nowrap text-white sm:text-5xl">
-                {caseStudy.metric}
+            <div className="shrink-0 rounded-2xl border border-violet-light/25 bg-violet-deep/50 px-6 py-5 backdrop-blur lg:max-w-sm">
+              <p className="font-heading text-3xl font-semibold text-white sm:text-4xl">
+                {caseStudy.headline}
               </p>
               <p className="mt-1 text-xs tracking-[0.14em] text-violet-light uppercase">
-                {caseStudy.metricLabel}
+                {caseStudy.headlineLabel}
               </p>
             </div>
           </div>
@@ -563,6 +563,10 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                           {renderRichText(caseStudy.resultIntro)}
                         </p>
                       ) : null}
+
+                      <p className="text-xs font-semibold tracking-[0.14em] text-purple uppercase">
+                        Example scenario
+                      </p>
 
                       <div
                         className={`grid gap-4 ${

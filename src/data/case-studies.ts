@@ -11,6 +11,8 @@ export type CaseStudy = {
   industry: string;
   metric: string;
   metricLabel: string;
+  headline: string;
+  headlineLabel: string;
   shortDescription: string;
   problem: string;
   solution: string;
@@ -70,6 +72,8 @@ export const caseStudies: CaseStudy[] = [
       "Onboarding is designed to be faster, more consistent, and easier to manage, with an estimated 10 hours per month saved.",
     metric: "10 hrs/month",
     metricLabel: "estimated time saved",
+    headline: "Zero manual onboarding",
+    headlineLabel: "From form to welcome email",
     loomUrl: "",
     screenshot: "",
     problemParagraphs: [
@@ -181,6 +185,8 @@ export const caseStudies: CaseStudy[] = [
       "A custom sales CRM that captures enquiries, tracks deals on a visual pipeline, and sends follow-ups automatically.",
     metric: "8-10 hrs/month",
     metricLabel: "estimated time saved",
+    headline: "No lead left behind",
+    headlineLabel: "Pipeline and follow-ups in one place",
     loomUrl: "",
     screenshot: "",
     postUrl: "",
@@ -340,6 +346,8 @@ export const caseStudies: CaseStudy[] = [
       "A system that reads incoming emails and PDFs, extracts key details, and updates the correct order records automatically.",
     metric: "3 hrs/week",
     metricLabel: "estimated time saved",
+    headline: "No more copy-paste",
+    headlineLabel: "Emails and PDFs into order records",
     loomUrl: "",
     screenshot: "",
     postUrl: "",
@@ -491,6 +499,8 @@ export const caseStudies: CaseStudy[] = [
       "Less manual work, fewer scheduling mistakes, and a smoother booking experience for customers.",
     metric: "2 hrs/week",
     metricLabel: "estimated time saved",
+    headline: "Bookings, 24/7",
+    headlineLabel: "Answers, scheduling and confirmations",
     loomUrl: "",
     screenshot: "",
     postUrl: "",
@@ -656,6 +666,8 @@ export const caseStudies: CaseStudy[] = [
       "Customers get faster answers, support requests stay organized, and store owners spend less time on repetitive questions.",
     metric: "5 hrs/week",
     metricLabel: "estimated time saved",
+    headline: "Instant answers, fewer tickets",
+    headlineLabel: "Orders, support and recommendations",
     loomUrl: "",
     screenshot: "",
     postUrl: "",
